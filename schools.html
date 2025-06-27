@@ -793,6 +793,10 @@
                 <h2>Your Personalized Location Rankings</h2>
                 <p style="color: #7f8c8d; margin-bottom: 20px;">Based on your priorities, here are the best overall locations considering schools, community, and housing together. Click any card for more details.</p>
                 
+                <div class="info-box" style="margin-bottom: 20px;">
+                    <strong>Understanding School Assignments:</strong> Your 9-year-old needs an elementary school (grades K-5) and your 13-year-old needs a middle school (grades 6-8). Public schools are assigned by home address. Private schools and Posnack offer K-12, meaning both children can attend the same school.
+                </div>
+                
                 <div class="ranking-grid" id="rankingGrid">
                     <!-- Rankings will be dynamically generated -->
                 </div>
@@ -804,12 +808,30 @@
                 <h3>Interactive Area Map</h3>
                 <p style="color: #7f8c8d; margin-bottom: 15px;">Explore exact locations of schools, swimming facilities, community centers, and luxury neighborhoods. Click any marker for detailed information.</p>
                 <div class="map-filters">
-                    <button class="map-filter-btn active" onclick="toggleMapLayer('all')">Show All</button>
-                    <button class="map-filter-btn" onclick="toggleMapLayer('elementary')">Elementary Schools</button>
-                    <button class="map-filter-btn" onclick="toggleMapLayer('middle')">Middle Schools</button>
-                    <button class="map-filter-btn" onclick="toggleMapLayer('community')">Community Centers</button>
-                    <button class="map-filter-btn" onclick="toggleMapLayer('swimming')">Swimming Facilities</button>
-                    <button class="map-filter-btn" onclick="toggleMapLayer('luxury')">Luxury Communities</button>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-all" checked onchange="toggleAllLayers(this)">
+                        <span style="margin-left: 5px;">Show All</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-elementary" checked onchange="toggleMapLayer('elementary')">
+                        <span style="margin-left: 5px;">Elementary Schools (9yo)</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-middle" checked onchange="toggleMapLayer('middle')">
+                        <span style="margin-left: 5px;">Middle Schools (13yo)</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-community" checked onchange="toggleMapLayer('community')">
+                        <span style="margin-left: 5px;">Community Centers</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-swimming" checked onchange="toggleMapLayer('swimming')">
+                        <span style="margin-left: 5px;">Swimming Facilities</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-luxury" checked onchange="toggleMapLayer('luxury')">
+                        <span style="margin-left: 5px;">Luxury Communities</span>
+                    </label>
                 </div>
             </div>
             <div id="mapContainer"></div>
@@ -819,6 +841,15 @@
             <div class="comparison-table">
                 <h2>Comprehensive Comparison Matrix</h2>
                 <p style="color: #7f8c8d; margin-bottom: 20px;">Complete quantitative data for all locations. Scores update based on your priority settings.</p>
+                
+                <div class="warning-box" style="margin-bottom: 20px;">
+                    <strong>🚸 Understanding School Assignments:</strong>
+                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                        <li><strong>Public Schools:</strong> Your 9-year-old needs an elementary school (K-5) and your 13-year-old needs a middle school (6-8). These will be TWO DIFFERENT schools requiring separate drop-offs and pick-ups.</li>
+                        <li><strong>Private Schools (Posnack, Heritage, Sagemont):</strong> These are K-12 schools where BOTH children can attend the SAME campus with one drop-off, unified schedules, and shared events.</li>
+                        <li><strong>School Assignment:</strong> Public schools are assigned strictly by your home address. You cannot choose - the district tells you which school based on zones.</li>
+                    </ul>
+                </div>
                 
                 <div style="overflow-x: auto;">
                 <table id="comparisonTable">
@@ -839,8 +870,19 @@
                     <tbody>
                         <tr>
                             <td><strong>Weston Public</strong><br><span class="badge badge-secular">100% Secular</span></td>
-                            <td>Everglades (10/10)<br>Math: 89%, Read: 84%<br>Gator Run (10/10)<br>Math: 87%, Read: 83%</td>
-                            <td>Falcon Cove (9/10)<br>#112 in FL, 98% Algebra<br>Tequesta Trace (9/10)<br>20+ clubs</td>
+                            <td>
+                                <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>⚠️ Two Schools Required</strong>
+                                </div>
+                                <strong>9yo:</strong> Everglades (10/10)<br>Math: 89%, Read: 84%<br>
+                                <strong>OR</strong><br>
+                                <strong>9yo:</strong> Gator Run (10/10)<br>Math: 87%, Read: 83%
+                            </td>
+                            <td>
+                                <strong>13yo:</strong> Falcon Cove (9/10)<br>#112 in FL, 98% Algebra<br>
+                                <strong>OR</strong><br>
+                                <strong>13yo:</strong> Tequesta Trace (9/10)<br>20+ clubs
+                            </td>
                             <td>State test scores:<br>Top 5% in Florida<br>Cambridge programs<br>Multiple HS credits</td>
                             <td>Robotics teams<br>Coding clubs<br>Science fairs<br>GEARS/GEM programs</td>
                             <td>YMCA Olympic pool<br>Competitive team<br>Year-round programs<br>15 min to Cyclones</td>
@@ -851,8 +893,17 @@
                         </tr>
                         <tr>
                             <td><strong>Cooper City Public</strong><br><span class="badge badge-secular">100% Secular</span></td>
-                            <td>Embassy Creek (9/10)<br>Math: 83%, Read: 82%<br>Cooper City Elem (8/10)<br>STEAM Club focus</td>
-                            <td>Pioneer (8/10)<br>#140 in FL<br>Cambridge program<br>TV production</td>
+                            <td>
+                                <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>⚠️ Two Schools Required</strong>
+                                </div>
+                                <strong>9yo:</strong> Embassy Creek (9/10)<br>Math: 83%, Read: 82%<br>
+                                <strong>OR</strong><br>
+                                <strong>9yo:</strong> Cooper City Elem (8/10)<br>STEAM Club focus
+                            </td>
+                            <td>
+                                <strong>13yo:</strong> Pioneer (8/10)<br>#140 in FL<br>Cambridge program<br>TV production
+                            </td>
                             <td>A-rated schools<br>Above state average<br>Strong gifted programs</td>
                             <td>STEAM with coding<br>Engineering projects<br>Cambridge advanced<br>Media production</td>
                             <td><span class="badge badge-safety">Best: Cyclones</span><br>USA Swimming team<br>Character development<br>Own aquatic center</td>
@@ -863,8 +914,19 @@
                         </tr>
                         <tr>
                             <td><strong>Davie Public</strong><br><span class="badge badge-secular">100% Secular</span></td>
-                            <td>Fox Trail (9/10)<br>Math: 67%, Read: 69%<br>Silver Ridge (8/10)<br>Leader in Me program</td>
-                            <td>Indian Ridge (7/10)<br>HS credits: Alg, Geo, Bio<br>Nova Middle (6/10)</td>
+                            <td>
+                                <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>⚠️ Two Schools Required</strong>
+                                </div>
+                                <strong>9yo:</strong> Fox Trail (9/10)<br>Math: 67%, Read: 69%<br>
+                                <strong>OR</strong><br>
+                                <strong>9yo:</strong> Silver Ridge (8/10)<br>Leader in Me program
+                            </td>
+                            <td>
+                                <strong>13yo:</strong> Indian Ridge (7/10)<br>HS credits: Alg, Geo, Bio<br>
+                                <strong>OR</strong><br>
+                                <strong>13yo:</strong> Nova Middle (6/10)
+                            </td>
                             <td>Mixed ratings<br>Some strong programs<br>Near universities</td>
                             <td>Near NSU workshops<br>McFatter Tech nearby<br>Basic programs</td>
                             <td>JCC pool on-site<br>Pine Island Aquatic<br>Good programs</td>
@@ -875,7 +937,14 @@
                         </tr>
                         <tr>
                             <td><strong>Posnack School</strong><br><span class="badge">Secular Jewish Culture</span></td>
-                            <td colspan="2">K-12 unified program<br>Elementary: STEM lab, MakerSpace<br>Middle: Coding 101, Robotics, Video Production<br>8:1 student-teacher ratio</td>
+                            <td colspan="2">
+                                <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>✅ SAME SCHOOL - Both Children Together (K-12)</strong>
+                                </div>
+                                <strong>9yo (4th grade):</strong> Elementary division - STEM lab, MakerSpace, Hebrew language, small classes<br>
+                                <strong>13yo (8th grade):</strong> Middle division - Coding 101, Robotics, Video Production, 1:1 laptops<br>
+                                <strong>Benefits:</strong> One drop-off, unified schedule, shared community events, 8:1 student-teacher ratio
+                            </td>
                             <td>#1 Jewish school FL<br>College prep focus<br>Hebrew language<br>Small classes</td>
                             <td>Comprehensive STEM<br>Coding, Engineering<br>Robotics, MakerSpace<br>Innovation lab</td>
                             <td>JCC pool access<br>Included with school<br>All programs available</td>
@@ -886,7 +955,14 @@
                         </tr>
                         <tr>
                             <td><strong>American Heritage</strong><br><span class="badge badge-secular">100% Secular</span></td>
-                            <td colspan="2">#1 Private K-12 in Florida<br>Elementary: Full academic program<br>Middle: Engineering intro, Design & Modeling<br>130+ arts courses</td>
+                            <td colspan="2">
+                                <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>✅ SAME SCHOOL - Both Children Together (K-12)</strong>
+                                </div>
+                                <strong>9yo (4th grade):</strong> Lower School - Full academic program, 130+ arts courses<br>
+                                <strong>13yo (8th grade):</strong> Middle School - Engineering intro, Design & Modeling, pre-professional tracks<br>
+                                <strong>Benefits:</strong> #1 Private school in FL, one campus, rolling admissions, 88 Merit Scholars (2025)
+                            </td>
                             <td>88 Merit Scholars 2025<br>Top 1% nationally<br>6 pre-professional tracks</td>
                             <td>Computer Science track<br>Engineering pathway<br>Robotics courses<br>Professional labs</td>
                             <td>Limited on-campus<br>30 min to facilities<br>Some partnerships</td>
@@ -1417,26 +1493,51 @@
         }
         
         function toggleMapLayer(layer) {
-            const btn = event.target;
-            const btns = document.querySelectorAll('.map-filter-btn');
+            if (typeof L === 'undefined' || !map) return;
             
-            if (layer === 'all') {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                Object.values(markers).flat().forEach(m => map.addLayer(m));
-            } else {
-                btn.classList.toggle('active');
-                const showAll = document.querySelector('.map-filter-btn[onclick*="all"]');
-                showAll.classList.remove('active');
+            const checkbox = document.getElementById(`filter-${layer}`);
+            const showAll = document.getElementById('filter-all');
+            
+            // If any individual checkbox is unchecked, uncheck "Show All"
+            if (!checkbox.checked) {
+                showAll.checked = false;
+            }
+            
+            // Toggle the layer visibility
+            markers[layer].forEach(m => {
+                if (checkbox.checked) {
+                    map.addLayer(m);
+                } else {
+                    map.removeLayer(m);
+                }
+            });
+            
+            // Check if all individual checkboxes are checked
+            const allChecked = ['elementary', 'middle', 'community', 'swimming', 'luxury'].every(
+                type => document.getElementById(`filter-${type}`).checked
+            );
+            
+            // Update "Show All" checkbox state
+            showAll.checked = allChecked;
+        }
+        
+        function toggleAllLayers(checkbox) {
+            if (typeof L === 'undefined' || !map) return;
+            
+            const types = ['elementary', 'middle', 'community', 'swimming', 'luxury'];
+            
+            types.forEach(type => {
+                const typeCheckbox = document.getElementById(`filter-${type}`);
+                typeCheckbox.checked = checkbox.checked;
                 
-                markers[layer].forEach(m => {
-                    if (btn.classList.contains('active')) {
+                markers[type].forEach(m => {
+                    if (checkbox.checked) {
                         map.addLayer(m);
                     } else {
                         map.removeLayer(m);
                     }
                 });
-            }
+            });
         }
         
         // Weight management
@@ -1507,6 +1608,7 @@
                 rankCard.onclick = () => selectLocation(location.key);
                 
                 const programHighlights = getProgramHighlights(location.key);
+                const schoolAssignment = getSchoolAssignment(location.key);
                 
                 rankCard.innerHTML = `
                     <div class="rank-number">${index + 1}</div>
@@ -1516,6 +1618,11 @@
                         
                         <div class="score-bar">
                             <div class="score-fill" style="width: ${location.totalScore}%">${location.totalScore}%</div>
+                        </div>
+                        
+                        <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong style="color: #1976d2;">📚 School Assignment for Your Children:</strong>
+                            ${schoolAssignment}
                         </div>
                         
                         <div class="score-details">
@@ -1538,8 +1645,7 @@
                         </div>
                         
                         <div style="margin-top: 15px;">
-                            <strong>Schools:</strong> ${location.schools.elementary[0].name}, ${location.schools.middle[0].name}<br>
-                            <strong>Programs:</strong> ${programHighlights}<br>
+                            <strong>Key Programs:</strong> ${programHighlights}<br>
                             <strong>Home Prices:</strong> ${location.details.homePrice}<br>
                             <strong>JCC Distance:</strong> ${location.details.commute}
                         </div>
@@ -1555,6 +1661,89 @@
             document.getElementById('davie-score').textContent = calculateScore(locationData.davie) + '%';
             document.getElementById('posnack-score').textContent = calculateScore(locationData.posnack) + '%';
             document.getElementById('heritage-score').textContent = calculateScore(locationData.heritage) + '%';
+        }
+        
+        function getSchoolAssignment(key) {
+            const assignments = {
+                weston: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old (4th grade):</strong> <span style="color: #2e7d32;">Everglades Elementary</span> or <span style="color: #2e7d32;">Gator Run Elementary</span>
+                            <br><small style="color: #666;">Both rated 10/10 - assigned by home address</small>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old (8th grade):</strong> <span style="color: #1976d2;">Falcon Cove Middle</span> or <span style="color: #1976d2;">Tequesta Trace Middle</span>
+                            <br><small style="color: #666;">Both rated 9/10 - assigned by home address</small>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #fff3cd; border-radius: 4px;">
+                            ⚠️ <strong>Different Schools:</strong> Daily drop-offs at 2 locations (usually 5-10 min apart)
+                        </div>
+                    </div>
+                `,
+                cooper: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old (4th grade):</strong> <span style="color: #2e7d32;">Embassy Creek Elementary</span> or <span style="color: #2e7d32;">Cooper City Elementary</span>
+                            <br><small style="color: #666;">9/10 and 8/10 ratings - assigned by home address</small>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old (8th grade):</strong> <span style="color: #1976d2;">Pioneer Middle School</span>
+                            <br><small style="color: #666;">8/10 rating - Cambridge program available</small>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #fff3cd; border-radius: 4px;">
+                            ⚠️ <strong>Different Schools:</strong> 2 drop-offs, but schools are relatively close
+                        </div>
+                    </div>
+                `,
+                davie: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old (4th grade):</strong> <span style="color: #2e7d32;">Fox Trail Elementary</span> or <span style="color: #2e7d32;">Silver Ridge Elementary</span>
+                            <br><small style="color: #666;">9/10 and 8/10 ratings - near JCC</small>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old (8th grade):</strong> <span style="color: #1976d2;">Indian Ridge Middle</span> or <span style="color: #1976d2;">Nova Middle</span>
+                            <br><small style="color: #666;">7/10 and 6/10 ratings - HS credits available at Indian Ridge</small>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #fff3cd; border-radius: 4px;">
+                            ⚠️ <strong>Different Schools:</strong> 2 locations, but both near JCC
+                        </div>
+                    </div>
+                `,
+                posnack: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old (4th grade):</strong> <span style="color: #e91e63;">David Posnack Jewish Day School</span>
+                            <br><small style="color: #666;">Elementary division - STEM lab, MakerSpace, Hebrew</small>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old (8th grade):</strong> <span style="color: #e91e63;">David Posnack Jewish Day School</span>
+                            <br><small style="color: #666;">Middle division - Coding, Robotics, Video Production</small>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
+                            ✅ <strong>SAME SCHOOL:</strong> Both children attend same campus (K-12 school)
+                            <br>One drop-off, unified community, coordinated schedules
+                        </div>
+                    </div>
+                `,
+                heritage: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old (4th grade):</strong> <span style="color: #e91e63;">American Heritage Lower School</span>
+                            <br><small style="color: #666;">Elementary division - comprehensive academics</small>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old (8th grade):</strong> <span style="color: #e91e63;">American Heritage Middle School</span>
+                            <br><small style="color: #666;">Junior High - Engineering, Design & Modeling</small>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
+                            ✅ <strong>SAME SCHOOL:</strong> Both on same campus (K-12 school)
+                            <br>#1 Private school in Florida, rolling admissions
+                        </div>
+                    </div>
+                `
+            };
+            return assignments[key] || "";
         }
         
         function getProgramHighlights(key) {
