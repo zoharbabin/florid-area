@@ -2055,4 +2055,675 @@
                         <li><strong>If swimming is crucial:</strong> Cooper City (<a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> base)</li>
                         <li><strong>If you want urban/international:</strong> Aventura (Manhattan feel)</li>
                         <li><strong>If you want best value:</strong> Cooper City public schools</li>
-                        <li><strong>If you want beach lifestyle:
+                        <li><strong>If you want beach lifestyle:</strong> North Miami Beach + <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel</a></li>
+                        <li><strong>If you want one school for both kids:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a>, <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a>, <a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">ACES</a>, or <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Calculate days until move
+        function updateDaysLeft() {
+            const moveDate = new Date('2025-08-25');
+            const today = new Date();
+            const daysLeft = Math.ceil((moveDate - today) / (1000 * 60 * 60 * 24));
+            document.getElementById('daysLeft').textContent = daysLeft;
+        }
+        
+        // Extended data structure including new areas
+        const locationData = {
+            weston: {
+                name: "Weston Public Schools",
+                coords: [26.1003, -80.3997],
+                schools: {
+                    elementary: [
+                        {name: "Everglades Elementary", coords: [26.1020, -80.4010], data: "10/10 GreatSchools<br>Math: 89%, Reading: 84%<br>Science: 75%<br>FDOE Grade: A"},
+                        {name: "Gator Run Elementary", coords: [26.0980, -80.3920], data: "10/10 GreatSchools<br>Math: 87%, Reading: 83%<br>Science: 76%<br>Immigrant-friendly"}
+                    ],
+                    middle: [
+                        {name: "Falcon Cove Middle", coords: [26.1040, -80.3890], data: "#112 in Florida<br>98% Algebra 1 pass<br>State STEM Champions<br>Cambridge Program"},
+                        {name: "Tequesta Trace Middle", coords: [26.0960, -80.3950], data: "9/10 GreatSchools<br>20+ clubs offered<br>A-rated FDOE<br>HS credits available"}
+                    ]
+                },
+                scores: {
+                    academic: 100,
+                    stem: 90,
+                    arts: 85,
+                    gamedesign: 60,
+                    community: 70,
+                    swimming: 95,
+                    safety: 100,
+                    luxury: 95,
+                    cost: 100,
+                    international: 60,
+                    beach: 30,
+                    traffic: 70
+                },
+                details: {
+                    population: "18,000 Jewish residents",
+                    safety: "5.5 per 1,000 residents",
+                    homePrice: "$600K-$2M+",
+                    commute: "15-20 min to JCC"
+                }
+            },
+            cooper: {
+                name: "Cooper City Public Schools",
+                coords: [26.0573, -80.2717],
+                schools: {
+                    elementary: [
+                        {name: "Embassy Creek Elementary", coords: [26.0520, -80.2680], data: "9/10 GreatSchools<br>Math: 83%, Reading: 82%<br>#143 in Florida<br>Gifted program"},
+                        {name: "Cooper City Elementary", coords: [26.0600, -80.2750], data: "8/10 GreatSchools<br>STEAM Club focus<br>Coding emphasis<br>Art Club available"}
+                    ],
+                    middle: [
+                        {name: "Pioneer Middle School", coords: [26.0550, -80.2700], data: "#140 in Florida<br>Cambridge program<br>TV production<br>Near pool complex"}
+                    ]
+                },
+                scores: {
+                    academic: 85,
+                    stem: 85,
+                    arts: 80,
+                    gamedesign: 65,
+                    community: 70,
+                    swimming: 100,
+                    safety: 90,
+                    luxury: 75,
+                    cost: 100,
+                    international: 50,
+                    beach: 40,
+                    traffic: 80
+                },
+                details: {
+                    population: "Growing Israeli presence",
+                    safety: "10 per 1,000 residents",
+                    homePrice: "$450K-$1.2M",
+                    commute: "10-15 min to JCC"
+                }
+            },
+            davie: {
+                name: "Davie Public Schools",
+                coords: [26.0765, -80.2521],
+                schools: {
+                    elementary: [
+                        {name: "Fox Trail Elementary", coords: [26.0820, -80.2400], data: "9/10 GreatSchools<br>Math: 67%, Reading: 69%<br>Art Club praised<br>Leader in Me program"},
+                        {name: "Silver Ridge Elementary", coords: [26.0700, -80.2600], data: "8/10 GreatSchools<br>Chorus program<br>Student news broadcast<br>Harry Potter book club"}
+                    ],
+                    middle: [
+                        {name: "Indian Ridge Middle", coords: [26.0780, -80.2450], data: "7/10 GreatSchools<br>HS credits available<br>Algebra, Geometry, Biology<br>Near JCC"},
+                        {name: "Nova Middle School", coords: [26.0850, -80.2550], data: "6/10 GreatSchools<br>Mixed reviews<br>Basic programs<br>Diverse student body"}
+                    ]
+                },
+                scores: {
+                    academic: 75,
+                    stem: 70,
+                    arts: 70,
+                    gamedesign: 85,
+                    community: 100,
+                    swimming: 80,
+                    safety: 75,
+                    luxury: 70,
+                    cost: 100,
+                    international: 70,
+                    beach: 45,
+                    traffic: 85
+                },
+                details: {
+                    population: "Highest Jewish concentration",
+                    safety: "20 per 1,000 residents",
+                    homePrice: "$400K-$1.5M",
+                    commute: "At JCC location"
+                }
+            },
+            aventura: {
+                name: "Aventura",
+                coords: [25.9561, -80.1394],
+                schools: {
+                    elementary: [
+                        {name: "Aventura City of Excellence (K-8)", coords: [25.9550, -80.1400], data: "A-rated charter school<br>Both kids same school<br>K-8 program<br>International focus"}
+                    ],
+                    middle: [
+                        {name: "ACES Middle School Division", coords: [25.9550, -80.1400], data: "Same campus as elementary<br>Innovative curriculum<br>Flexible programming<br>Strong academics"}
+                    ]
+                },
+                scores: {
+                    academic: 90,
+                    stem: 85,
+                    arts: 80,
+                    gamedesign: 70,
+                    community: 85,
+                    swimming: 75,
+                    safety: 85,
+                    luxury: 100,
+                    cost: 70,
+                    international: 100,
+                    beach: 70,
+                    traffic: 60
+                },
+                details: {
+                    population: "40% international families",
+                    safety: "15 per 1,000 residents",
+                    homePrice: "$400K-$2M+ condos",
+                    commute: "25 min to beaches"
+                }
+            },
+            nmb: {
+                name: "North Miami Beach",
+                coords: [25.9331, -80.1625],
+                schools: {
+                    elementary: [
+                        {name: "Scheck Hillel Community School", coords: [25.9300, -80.1600], data: "#3 Jewish School Miami<br>K-12 option<br>1,300+ students<br>7:1 ratio"},
+                        {name: "Ojus Elementary", coords: [25.9350, -80.1650], data: "7/10 GreatSchools<br>Public option<br>Diverse student body<br>Basic programs"}
+                    ],
+                    middle: [
+                        {name: "Hillel Middle School", coords: [25.9300, -80.1600], data: "Same campus K-12<br>Jewish identity focus<br>Strong academics<br>Large resources"},
+                        {name: "Highland Oaks Middle", coords: [25.9400, -80.1700], data: "6/10 GreatSchools<br>Public option<br>Standard programs<br>Mixed reviews"}
+                    ]
+                },
+                scores: {
+                    academic: 80,
+                    stem: 75,
+                    arts: 75,
+                    gamedesign: 60,
+                    community: 80,
+                    swimming: 85,
+                    safety: 70,
+                    luxury: 75,
+                    cost: 85,
+                    international: 75,
+                    beach: 90,
+                    traffic: 65
+                },
+                details: {
+                    population: "Mixed Orthodox/Secular",
+                    safety: "18 per 1,000 residents",
+                    homePrice: "$350K-$1.5M",
+                    commute: "15 min to beach"
+                }
+            },
+            posnack: {
+                name: "Davie + Posnack School",
+                coords: [26.0641, -80.2549],
+                schools: {
+                    elementary: [
+                        {name: "David Posnack Jewish Day School K-5", coords: [26.0641, -80.2549], data: "#1 Jewish School FL<br>STEM Lab & MakerSpace<br>Hebrew language<br>8:1 ratio"}
+                    ],
+                    middle: [
+                        {name: "David Posnack Jewish Day School 6-8", coords: [26.0641, -80.2549], data: "Coding 101, Robotics<br>Video Production<br>1:1 laptop program<br>Israeli culture focus"}
+                    ]
+                },
+                scores: {
+                    academic: 95,
+                    stem: 95,
+                    arts: 85,
+                    gamedesign: 90,
+                    community: 100,
+                    swimming: 85,
+                    safety: 75,
+                    luxury: 70,
+                    cost: 30,
+                    international: 80,
+                    beach: 45,
+                    traffic: 85
+                },
+                details: {
+                    population: "Integrated Israeli community",
+                    safety: "20 per 1,000 (Davie)",
+                    homePrice: "$400K-$1.5M + tuition",
+                    commute: "On JCC campus"
+                }
+            },
+            heritage: {
+                name: "American Heritage (Plantation)",
+                coords: [26.1259, -80.2338],
+                schools: {
+                    elementary: [
+                        {name: "American Heritage Lower School", coords: [26.1259, -80.2338], data: "#1 Private K-12 FL<br>Full academic program<br>130+ arts courses<br>Rolling admission"}
+                    ],
+                    middle: [
+                        {name: "American Heritage Middle School", coords: [26.1259, -80.2338], data: "Engineering intro<br>Design & Modeling<br>Pre-professional tracks<br>88 Merit Scholars"}
+                    ]
+                },
+                scores: {
+                    academic: 100,
+                    stem: 100,
+                    arts: 100,
+                    gamedesign: 85,
+                    community: 50,
+                    swimming: 60,
+                    safety: 80,
+                    luxury: 90,
+                    cost: 20,
+                    international: 70,
+                    beach: 50,
+                    traffic: 75
+                },
+                details: {
+                    population: "Diverse, not Israeli-focused",
+                    safety: "Secure private campus",
+                    homePrice: "Varies + $42K tuition",
+                    commute: "25 min to JCC"
+                }
+            }
+        };
+        
+        // Initialize map
+        let map;
+        let markers = {
+            elementary: [],
+            middle: [],
+            community: [],
+            swimming: [],
+            luxury: []
+        };
+        
+        function initMap() {
+            if (typeof L === 'undefined') {
+                console.error('Leaflet library not loaded');
+                document.getElementById('mapContainer').innerHTML = `
+                    <div style="padding: 50px; text-align: center; background: #f8f9fa; border-radius: 10px;">
+                        <h3 style="color: #e74c3c;">Map Loading Error</h3>
+                        <p>The interactive map requires external libraries. Here's what you need to know about locations:</p>
+                        <ul style="text-align: left; max-width: 600px; margin: 20px auto;">
+                            <li><strong>Broward County:</strong> Weston, Cooper City, Davie</li>
+                            <li><strong>Miami-Dade County:</strong> Aventura, North Miami Beach</li>
+                            <li><strong>Different Counties = Different Calendars!</strong></li>
+                        </ul>
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                // Create map with wider view to include new areas
+                map = L.map('mapContainer').setView([26.0200, -80.2200], 11);
+                
+                // Add tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 18
+                }).addTo(map);
+                
+                // Add all location markers including new areas
+                Object.keys(locationData).forEach(key => {
+                    const location = locationData[key];
+                    
+                    // Add elementary schools
+                    location.schools.elementary.forEach(school => {
+                        addMarker(school.coords, 'elementary', school.name, school.data);
+                    });
+                    
+                    // Add middle schools
+                    location.schools.middle.forEach(school => {
+                        addMarker(school.coords, 'middle', school.name, school.data);
+                    });
+                });
+                
+                // Add community centers
+                addMarker([26.0641, -80.2549], 'community', 'David Posnack JCC', 
+                    'Israeli community hub<br>Swimming pool<br>Youth programs<br>Maccabi Tzair movement');
+                addMarker([25.9600, -80.1420], 'community', 'Aventura Community Center', 
+                    'International community<br>Programs & events<br>Near ACES school');
+                
+                // Add swimming facilities
+                addMarker([26.0950, -80.3850], 'swimming', 'Weston YMCA', 
+                    '<span class="popup-highlight">Olympic pool</span><br>Competitive swim team<br>Year-round programs');
+                addMarker([26.0575, -80.2720], 'swimming', 'Cooper City Pool Complex', 
+                    '<span class="popup-highlight">Cooper City Cyclones</span><br>USA Swimming team<br>Best program');
+                addMarker([25.9650, -80.1250], 'swimming', 'Aventura Aquatic Center',
+                    'Modern facility<br>Programs for all ages<br>Near beach');
+                
+                // Add luxury communities
+                addMarker([25.9550, -80.1350], 'luxury', 'Aventura Luxury Towers', 
+                    '<span class="popup-highlight">International living</span><br>Turnberry, Porto Vita<br>Williams Island<br>NYC-style amenities');
+                addMarker([25.9400, -80.1500], 'luxury', 'Eastern Shores NMB', 
+                    'Waterfront homes<br>Growing Israeli presence<br>Beach proximity');
+                
+                // Add county boundary line
+                const countyBoundary = L.polyline([
+                    [26.0100, -80.5000],
+                    [26.0100, -80.1000]
+                ], {
+                    color: 'red',
+                    weight: 3,
+                    opacity: 0.6,
+                    dashArray: '10, 10'
+                }).addTo(map);
+                
+                countyBoundary.bindPopup('County Line: Broward (North) | Miami-Dade (South)<br>Different school systems!');
+                
+            } catch (error) {
+                console.error('Map initialization error:', error);
+            }
+        }
+        
+        function addMarker(coords, type, title, description) {
+            const colors = {
+                elementary: '#3498db',
+                middle: '#9b59b6',
+                community: '#e74c3c',
+                swimming: '#1abc9c',
+                luxury: '#f39c12'
+            };
+            
+            const marker = L.circleMarker(coords, {
+                radius: 12,
+                fillColor: colors[type],
+                color: '#fff',
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.bindPopup(`
+                <div class="popup-title">${title}</div>
+                <div class="popup-details">${description}</div>
+            `);
+            
+            markers[type].push(marker);
+        }
+        
+        function toggleMapLayer(layer) {
+            if (typeof L === 'undefined' || !map) return;
+            
+            const checkbox = document.getElementById(`filter-${layer}`);
+            const showAll = document.getElementById('filter-all');
+            
+            if (!checkbox.checked) {
+                showAll.checked = false;
+            }
+            
+            markers[layer].forEach(m => {
+                if (checkbox.checked) {
+                    map.addLayer(m);
+                } else {
+                    map.removeLayer(m);
+                }
+            });
+            
+            const allChecked = ['elementary', 'middle', 'community', 'swimming', 'luxury'].every(
+                type => document.getElementById(`filter-${type}`).checked
+            );
+            
+            showAll.checked = allChecked;
+        }
+        
+        function toggleAllLayers(checkbox) {
+            if (typeof L === 'undefined' || !map) return;
+            
+            const types = ['elementary', 'middle', 'community', 'swimming', 'luxury'];
+            
+            types.forEach(type => {
+                const typeCheckbox = document.getElementById(`filter-${type}`);
+                typeCheckbox.checked = checkbox.checked;
+                
+                markers[type].forEach(m => {
+                    if (checkbox.checked) {
+                        map.addLayer(m);
+                    } else {
+                        map.removeLayer(m);
+                    }
+                });
+            });
+        }
+        
+        // Weight management with extended factors
+        let weights = {
+            academic: 50,
+            stem: 50,
+            arts: 50,
+            gamedesign: 50,
+            community: 50,
+            swimming: 50,
+            safety: 50,
+            luxury: 50,
+            cost: 50,
+            international: 50,
+            beach: 50,
+            traffic: 50
+        };
+        
+        function updateWeights() {
+            Object.keys(weights).forEach(key => {
+                weights[key] = parseInt(document.getElementById(`${key}-weight`).value);
+                document.getElementById(`${key}-value`).textContent = weights[key] + '%';
+            });
+            updateRankings();
+        }
+        
+        function setPreset(preset) {
+            const presets = {
+                academic: { academic: 90, stem: 80, arts: 70, gamedesign: 50, community: 40, swimming: 50, safety: 80, luxury: 60, cost: 60, international: 50, beach: 40, traffic: 60 },
+                community: { academic: 60, stem: 60, arts: 50, gamedesign: 50, community: 100, swimming: 60, safety: 70, luxury: 50, cost: 50, international: 70, beach: 50, traffic: 70 },
+                swimming: { academic: 70, stem: 60, arts: 50, gamedesign: 40, community: 50, swimming: 100, safety: 70, luxury: 50, cost: 50, international: 40, beach: 60, traffic: 70 },
+                gamedesign: { academic: 70, stem: 80, arts: 60, gamedesign: 100, community: 50, swimming: 40, safety: 60, luxury: 40, cost: 50, international: 60, beach: 30, traffic: 70 },
+                international: { academic: 80, stem: 70, arts: 70, gamedesign: 60, community: 80, swimming: 60, safety: 70, luxury: 80, cost: 50, international: 100, beach: 70, traffic: 50 },
+                balanced: { academic: 70, stem: 70, arts: 60, gamedesign: 60, community: 70, swimming: 60, safety: 80, luxury: 60, cost: 70, international: 60, beach: 60, traffic: 70 }
+            };
+            
+            const selectedPreset = presets[preset];
+            Object.keys(selectedPreset).forEach(key => {
+                weights[key] = selectedPreset[key];
+                document.getElementById(`${key}-weight`).value = selectedPreset[key];
+                document.getElementById(`${key}-value`).textContent = selectedPreset[key] + '%';
+            });
+            
+            updateRankings();
+        }
+        
+        function calculateScore(location) {
+            let totalScore = 0;
+            let totalWeight = 0;
+            
+            Object.keys(weights).forEach(key => {
+                totalScore += (location.scores[key] * weights[key]);
+                totalWeight += weights[key];
+            });
+            
+            return totalWeight > 0 ? Math.round(totalScore / totalWeight) : 0;
+        }
+        
+        function updateRankings() {
+            const rankings = Object.keys(locationData).map(key => ({
+                key: key,
+                ...locationData[key],
+                totalScore: calculateScore(locationData[key])
+            })).sort((a, b) => b.totalScore - a.totalScore);
+            
+            const rankingGrid = document.getElementById('rankingGrid');
+            rankingGrid.innerHTML = '';
+            
+            rankings.forEach((location, index) => {
+                const rankCard = document.createElement('div');
+                rankCard.className = 'ranking-card';
+                rankCard.onclick = () => selectLocation(location.key);
+                
+                const programHighlights = getProgramHighlights(location.key);
+                const schoolAssignment = getSchoolAssignment(location.key);
+                
+                rankCard.innerHTML = `
+                    <div class="rank-number">${index + 1}</div>
+                    <div class="ranking-content">
+                        <div class="ranking-title">${location.name}</div>
+                        <div class="ranking-subtitle">${location.details.population} • ${location.details.safety} crime rate</div>
+                        
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${location.totalScore}%">${location.totalScore}%</div>
+                        </div>
+                        
+                        <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <strong style="color: #1976d2;">📚 School Assignment for Your Children:</strong>
+                            ${schoolAssignment}
+                        </div>
+                        
+                        <div class="score-details">
+                            <div class="score-item">
+                                <div class="score-item-label">Academic</div>
+                                <div class="score-item-value">${location.scores.academic}%</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-label">Community</div>
+                                <div class="score-item-value">${location.scores.community}%</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-label">International</div>
+                                <div class="score-item-value">${location.scores.international}%</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-label">Safety</div>
+                                <div class="score-item-value">${location.scores.safety}%</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <strong>Key Programs:</strong> ${programHighlights}<br>
+                            <strong>Home Prices:</strong> ${location.details.homePrice}<br>
+                            <strong>Commute:</strong> ${location.details.commute}
+                        </div>
+                    </div>
+                `;
+                
+                rankingGrid.appendChild(rankCard);
+            });
+            
+            // Update comparison table scores
+            document.getElementById('weston-score').textContent = calculateScore(locationData.weston) + '%';
+            document.getElementById('cooper-score').textContent = calculateScore(locationData.cooper) + '%';
+            document.getElementById('davie-score').textContent = calculateScore(locationData.davie) + '%';
+            document.getElementById('aventura-score').textContent = calculateScore(locationData.aventura) + '%';
+            document.getElementById('nmb-score').textContent = calculateScore(locationData.nmb) + '%';
+            document.getElementById('posnack-score').textContent = calculateScore(locationData.posnack) + '%';
+            document.getElementById('heritage-score').textContent = calculateScore(locationData.heritage) + '%';
+        }
+        
+        function getSchoolAssignment(key) {
+            const assignments = {
+                weston: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old:</strong> <span style="color: #2e7d32;"><a href="https://www.google.com/search?q=everglades+elementary+weston" target="_blank" class="external-link">Everglades</a> or <a href="https://www.google.com/search?q=gator+run+elementary+weston" target="_blank" class="external-link">Gator Run Elementary</a></span>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old:</strong> <span style="color: #1976d2;"><a href="https://www.google.com/search?q=falcon+cove+middle+weston" target="_blank" class="external-link">Falcon Cove</a> or <a href="https://www.google.com/search?q=tequesta+trace+middle+weston" target="_blank" class="external-link">Tequesta Trace Middle</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #fff3cd; border-radius: 4px;">
+                            ⚠️ <strong>Two different schools, same district (Broward)</strong>
+                        </div>
+                    </div>
+                `,
+                cooper: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old:</strong> <span style="color: #2e7d32;"><a href="https://www.google.com/search?q=embassy+creek+elementary" target="_blank" class="external-link">Embassy Creek</a> or <a href="https://www.google.com/search?q=cooper+city+elementary" target="_blank" class="external-link">Cooper City Elementary</a></span>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old:</strong> <span style="color: #1976d2;"><a href="https://www.google.com/search?q=pioneer+middle+school+cooper+city" target="_blank" class="external-link">Pioneer Middle School</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #fff3cd; border-radius: 4px;">
+                            ⚠️ <strong>Two different schools, same district (Broward)</strong>
+                        </div>
+                    </div>
+                `,
+                davie: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 9-year-old:</strong> <span style="color: #2e7d32;"><a href="https://www.google.com/search?q=fox+trail+elementary+davie" target="_blank" class="external-link">Fox Trail</a> or <a href="https://www.google.com/search?q=silver+ridge+elementary+davie" target="_blank" class="external-link">Silver Ridge Elementary</a></span>
+                        </div>
+                        <div>
+                            <strong>👦 13-year-old:</strong> <span style="color: #1976d2;"><a href="https://www.google.com/search?q=indian+ridge+middle+davie" target="_blank" class="external-link">Indian Ridge</a> or <a href="https://www.google.com/search?q=nova+middle+school+davie" target="_blank" class="external-link">Nova Middle</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #fff3cd; border-radius: 4px;">
+                            ⚠️ <strong>Two different schools, same district (Broward)</strong>
+                        </div>
+                    </div>
+                `,
+                aventura: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 Both Children:</strong> <span style="color: #e91e63;"><a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">Aventura City of Excellence School (ACES)</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
+                            ✅ <strong>SAME K-8 SCHOOL!</strong> One drop-off, unified schedule<br>
+                            🌍 <strong>International community, Miami-Dade district</strong>
+                        </div>
+                    </div>
+                `,
+                nmb: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>Option 1:</strong> <span style="color: #e91e63;">Both at <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel</a> (K-12)</span><br>
+                            <strong>Option 2:</strong> <span style="color: #2e7d32;"><a href="https://www.google.com/search?q=ojus+elementary+school" target="_blank" class="external-link">Ojus Elem</a></span> + <span style="color: #1976d2;"><a href="https://www.google.com/search?q=highland+oaks+middle+school" target="_blank" class="external-link">Highland Oaks Middle</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #d1ecf1; border-radius: 4px;">
+                            🏖️ <strong>Beach proximity, Miami-Dade district</strong>
+                        </div>
+                    </div>
+                `,
+                posnack: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 Both Children:</strong> <span style="color: #e91e63;"><a href="https://www.posnackschool.org/" target="_blank" class="external-link">David Posnack Jewish Day School</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
+                            ✅ <strong>SAME K-12 SCHOOL!</strong> Israeli culture focus<br>
+                            🏠 <strong>Live in Davie (Broward County)</strong>
+                        </div>
+                    </div>
+                `,
+                heritage: `
+                    <div style="margin-top: 10px;">
+                        <div style="margin-bottom: 8px;">
+                            <strong>👦 Both Children:</strong> <span style="color: #e91e63;"><a href="https://www.ahschool.com/" target="_blank" class="external-link">American Heritage School</a></span>
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
+                            ✅ <strong>SAME K-12 SCHOOL!</strong> Elite academics<br>
+                            📍 <strong>Plantation location (Broward County)</strong>
+                        </div>
+                    </div>
+                `
+            };
+            return assignments[key] || "";
+        }
+        
+        function getProgramHighlights(key) {
+            const highlights = {
+                weston: "Robotics champions, Cambridge program, YMCA swimming",
+                cooper: "STEAM with coding, Cyclones swim team, Cambridge",
+                davie: "Near NSU workshops, JCC programs, game design access",
+                aventura: "International community, beach proximity, urban lifestyle",
+                nmb: "Beach access, Hillel school option, growing community",
+                posnack: "Coding/Robotics/MakerSpace, Hebrew, Israeli culture",
+                heritage: "130+ arts, pre-professional tracks, engineering"
+            };
+            return highlights[key] || "";
+        }
+        
+        function selectLocation(key) {
+            showSection('details');
+        }
+        
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (sectionId === 'map' && !map) {
+                setTimeout(() => {
+                    initMap();
+                }, 500);
+            }
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDaysLeft();
+            updateRankings();
+        });
+    </script>
+</body>
+</html>
