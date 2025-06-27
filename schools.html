@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced South Florida School & Community Decision Platform - Complete Analysis with All Areas</title>
+    <title>Enhanced South Florida School & Community Decision Platform - Complete Analysis with Tuition</title>
     <!-- Leaflet CSS and JS from approved cdnjs.cloudflare.com -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -268,6 +268,20 @@
             color: #2c3e50;
         }
         
+        .tuition-highlight {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .tuition-amount {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #e67e22;
+        }
+        
         .tabs {
             display: flex;
             justify-content: center;
@@ -481,6 +495,11 @@
         .badge-international {
             background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
             color: white;
+        }
+        
+        .badge-tuition {
+            background-color: #fff3cd;
+            color: #856404;
         }
         
         .leaflet-popup-content {
@@ -848,7 +867,7 @@
     <div class="container">
         <header>
             <h1>Your Enhanced South Florida School & Community Decision Platform</h1>
-            <p class="subtitle">Complete Analysis Including Aventura, North Miami Beach & All Living Considerations</p>
+            <p class="subtitle">Complete Analysis Including All Areas with Accurate Tuition Data</p>
         </header>
         
         <div class="dashboard">
@@ -869,8 +888,12 @@
                 <div class="metric-value">25,000+</div>
             </div>
             <div class="metric-card">
+                <div class="metric-label">Annual Tuition Range</div>
+                <div class="metric-value">$0-85K</div>
+            </div>
+            <div class="metric-card">
                 <div class="metric-label">Decision Factors</div>
-                <div class="metric-value">12</div>
+                <div class="metric-value">13</div>
             </div>
         </div>
         
@@ -882,13 +905,14 @@
                 <button class="helper-btn" onclick="setPreset('swimming')">🏊 Swimming Focus</button>
                 <button class="helper-btn" onclick="setPreset('gamedesign')">🎮 Game Design Path</button>
                 <button class="helper-btn" onclick="setPreset('international')">🌍 International Vibe</button>
+                <button class="helper-btn" onclick="setPreset('budget')">💰 Budget Conscious</button>
                 <button class="helper-btn" onclick="setPreset('balanced')">⚖️ Balanced Approach</button>
             </div>
         </div>
         
         <div class="control-panel">
             <h2>Customize Your Priorities</h2>
-            <p style="margin-bottom: 20px; color: #7f8c8d;">Move the sliders to adjust how important each factor is for your family. The system will automatically recalculate the best locations based on your unique priorities.</p>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">Move the sliders to adjust how important each factor is for your family. The system will automatically recalculate the best locations based on your unique priorities, including tuition considerations.</p>
             
             <div class="weight-controls">
                 <div class="weight-control">
@@ -957,7 +981,15 @@
                 
                 <div class="weight-control">
                     <div class="weight-label">
-                        <span>Cost Efficiency</span>
+                        <span>💵 Tuition Affordability</span>
+                        <span class="weight-value" id="tuition-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="tuition-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Cost of Living</span>
                         <span class="weight-value" id="cost-value">50%</span>
                     </div>
                     <input type="range" class="weight-slider" id="cost-weight" min="0" max="100" value="50" oninput="updateWeights()">
@@ -1005,10 +1037,10 @@
         <div id="rankings" class="content-section active">
             <div class="ranking-section">
                 <h2>Your Personalized Location Rankings - All Areas</h2>
-                <p style="color: #7f8c8d; margin-bottom: 20px;">Based on your priorities, here are all locations including Aventura and North Miami Beach options. These rankings update in real-time as you adjust your preferences.</p>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Based on your priorities, here are all locations including Aventura and North Miami Beach options. Rankings update in real-time as you adjust your preferences, now including tuition affordability as a key factor.</p>
                 
                 <div class="info-box" style="margin-bottom: 20px;">
-                    <strong>🆕 Discovery:</strong> Aventura and North Miami Beach offer unique advantages. Aventura has an international flair similar to Manhattan with significant Israeli populations, while North Miami Beach hosts the prestigious <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel Community School</a>. Both are in Miami-Dade County, which has different school calendars and policies than Broward County.
+                    <strong>💡 Key Insight:</strong> Public schools and charter schools (ACES) have no tuition, while private schools range from $46,000 to $85,400 per year for both children. This can be a deciding factor for many families when combined with housing and living costs.
                 </div>
                 
                 <div class="ranking-grid" id="rankingGrid">
@@ -1020,52 +1052,52 @@
         <div id="overall-costs" class="content-section">
             <div class="overall-costs-section">
                 <h2>💵 Complete Cost Analysis - Your True Monthly & Annual Budget</h2>
-                <p style="text-align: center; color: #666; margin-bottom: 30px;">Understanding the REAL costs of living in each area - from housing to hurricane insurance to Hebrew tutoring</p>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Understanding the REAL costs of living in each area - from housing to hurricane insurance to school tuition</p>
                 
                 <div class="cost-comparison-grid">
                     <div class="cost-summary-card">
-                        <h4>💰 Weston - Premium Suburban</h4>
+                        <h4>💰 Weston - Premium Suburban (Public Schools)</h4>
                         <div class="total-cost">$12,000-18,000/month</div>
                         <div class="cost-breakdown">
                             <p><strong>Housing:</strong> $3,500-6,500 (rent) or $4,500-8,000 (mortgage+taxes)</p>
                             <p><strong>Living Expenses:</strong> $8,500-12,000</p>
-                            <p><strong>School:</strong> Public (free)</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span></p>
                             <p><strong>Annual Total:</strong> $144,000-216,000</p>
                             <p style="margin-top: 10px; color: #666;">Highest property taxes, HOA fees common ($200-500/mo), premium services</p>
                         </div>
                     </div>
                     
                     <div class="cost-summary-card">
-                        <h4>💰 Cooper City - Best Value</h4>
+                        <h4>💰 Cooper City - Best Value (Public Schools)</h4>
                         <div class="total-cost">$10,000-15,000/month</div>
                         <div class="cost-breakdown">
                             <p><strong>Housing:</strong> $2,800-5,000 (rent) or $3,500-6,000 (mortgage+taxes)</p>
                             <p><strong>Living Expenses:</strong> $7,500-10,000</p>
-                            <p><strong>School:</strong> Public (free)</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span></p>
                             <p><strong>Annual Total:</strong> $120,000-180,000</p>
                             <p style="margin-top: 10px; color: #666;">Best quality/price ratio, lower taxes than Weston, family-friendly</p>
                         </div>
                     </div>
                     
                     <div class="cost-summary-card">
-                        <h4>💰 Davie - Most Affordable</h4>
+                        <h4>💰 Davie - Most Affordable (Public Schools)</h4>
                         <div class="total-cost">$9,500-14,000/month</div>
                         <div class="cost-breakdown">
                             <p><strong>Housing:</strong> $2,500-4,500 (rent) or $3,000-5,500 (mortgage+taxes)</p>
                             <p><strong>Living Expenses:</strong> $7,000-9,500</p>
-                            <p><strong>School:</strong> Public (free)</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span></p>
                             <p><strong>Annual Total:</strong> $114,000-168,000</p>
                             <p style="margin-top: 10px; color: #666;">Most economical option, diverse housing choices, near universities</p>
                         </div>
                     </div>
                     
                     <div class="cost-summary-card">
-                        <h4>💰 Aventura - Urban International</h4>
+                        <h4>💰 Aventura - Urban International (Charter School)</h4>
                         <div class="total-cost">$12,500-19,000/month</div>
                         <div class="cost-breakdown">
                             <p><strong>Housing:</strong> $3,500-9,000 (rent) or $4,000-10,000 (mortgage+HOA)</p>
                             <p><strong>Living Expenses:</strong> $9,000-13,000</p>
-                            <p><strong>School:</strong> <a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">ACES</a> Charter (free)</p>
+                            <p><strong>School:</strong> <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">ACES</a> <span class="badge badge-tuition">Charter (FREE)</span></p>
                             <p><strong>Annual Total:</strong> $150,000-228,000</p>
                             <p style="margin-top: 10px; color: #666;">High-rise living includes amenities, walkable lifestyle saves on gas</p>
                         </div>
@@ -1077,21 +1109,33 @@
                         <div class="cost-breakdown">
                             <p><strong>Housing:</strong> $3,000-5,500 (rent) or $3,500-6,500 (mortgage+taxes)</p>
                             <p><strong>Living Expenses:</strong> $8,000-11,000</p>
-                            <p><strong>School:</strong> Public (free) or <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel</a> (~$22K/child)</p>
-                            <p><strong>Annual Total:</strong> $132,000-192,000</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span> or <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> (~$73K/2 kids)</p>
+                            <p><strong>Annual Total:</strong> $132,000-192,000 (public) or $205,000-265,000 (Hillel)</p>
                             <p style="margin-top: 10px; color: #666;">Beach lifestyle, gentrifying area, good value near water</p>
                         </div>
                     </div>
                     
                     <div class="cost-summary-card">
-                        <h4>💰 Posnack School Option</h4>
-                        <div class="total-cost">$14,000-18,000/month</div>
+                        <h4>💰 Davie + Posnack School Option</h4>
+                        <div class="total-cost">$13,000-17,833/month</div>
                         <div class="cost-breakdown">
                             <p><strong>Housing:</strong> Davie prices (see above)</p>
                             <p><strong>Living Expenses:</strong> $7,000-9,500</p>
-                            <p><strong>School:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> ~$50K/year (both kids)</p>
-                            <p><strong>Annual Total:</strong> $168,000-216,000</p>
+                            <p><strong>School:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> <span class="tuition-amount">$46K/year (2 kids)</span></p>
+                            <p><strong>Annual Total:</strong> $160,000-214,000</p>
                             <p style="margin-top: 10px; color: #666;">Premium for Jewish education, one school convenience, Israeli culture</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 American Heritage School Option</h4>
+                        <div class="total-cost">$17,000-24,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> Varies by location choice</p>
+                            <p><strong>Living Expenses:</strong> $8,000-11,000</p>
+                            <p><strong>School:</strong> <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a> <span class="tuition-amount">$85.4K/year (2 kids)</span></p>
+                            <p><strong>Annual Total:</strong> $204,000-288,000</p>
+                            <p style="margin-top: 10px; color: #666;">Elite academics, 88 Merit Scholars, extensive programs</p>
                         </div>
                     </div>
                 </div>
@@ -1104,9 +1148,10 @@
                         <li><strong>Summer AC Bills:</strong> $300-500/month May-October</li>
                         <li><strong>HOA Fees:</strong> $200-800/month in many communities</li>
                         <li><strong>Hebrew Tutoring:</strong> $200-300/month per child to maintain language</li>
-                        <li><strong>Camp:</strong> $3,000-5,000 per child per summer</li>
+                        <li><strong>Summer Camp:</strong> $3,000-5,000 per child per summer</li>
                         <li><strong>Pool/Lawn Service:</strong> $225-375/month combined (often required by HOA)</li>
                         <li><strong>Toll Roads:</strong> $100-300/month with SunPass</li>
+                        <li><strong>Private School Application Fees:</strong> $250-500 per school</li>
                     </ul>
                 </div>
             </div>
@@ -1250,7 +1295,7 @@
                         </div>
                         <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
                             <strong>Beach Access:</strong> 10-15 min to <a href="https://www.google.com/search?q=haulover+beach+park" target="_blank" class="external-link">Haulover Beach</a><br>
-                            <strong>Jewish Community:</strong> Near <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel School</a><br>
+                            <strong>Jewish Community:</strong> Near <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel School</a><br>
                             <strong>Value:</strong> More affordable than Aventura
                         </p>
                     </div>
@@ -1477,7 +1522,7 @@
                         <p><strong>For Your 9-Year-Old:</strong></p>
                         <ul style="margin: 10px 0; padding-left: 20px;">
                             <li>Beach sports and swimming</li>
-                            <li><a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel School</a> activities</li>
+                            <li><a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel School</a> activities</li>
                             <li>Water sports introduction</li>
                             <li>Local park programs</li>
                         </ul>
@@ -1524,7 +1569,7 @@
         <div id="living" class="content-section">
             <div class="living-considerations-section">
                 <h2>Cost of Living & Daily Life Considerations</h2>
-                <p style="color: #7f8c8d; margin-bottom: 20px;">Understanding the real costs and daily realities of life in each area beyond housing.</p>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Understanding the real costs and daily realities of life in each area beyond housing and tuition.</p>
                 
                 <div class="traffic-card">
                     <h3>🚗 Traffic Patterns & Commute Times</h3>
@@ -1701,7 +1746,7 @@
         <div id="comparison" class="content-section">
             <div class="comparison-table">
                 <h2>Comprehensive Comparison Matrix - All 7 Options</h2>
-                <p style="color: #7f8c8d; margin-bottom: 20px;">Complete data for all locations including Aventura and North Miami Beach options.</p>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Complete data for all locations including Aventura and North Miami Beach options with accurate tuition information.</p>
                 
                 <div class="warning-box" style="margin-bottom: 20px;">
                     <strong>🚸 Critical District Difference:</strong>
@@ -1719,6 +1764,7 @@
                             <th>Location</th>
                             <th>Elementary Options</th>
                             <th>Middle Options</th>
+                            <th>Annual Tuition</th>
                             <th>Academic Data</th>
                             <th>Community Demographics</th>
                             <th>Swimming</th>
@@ -1738,6 +1784,7 @@
                                 <strong><a href="https://www.google.com/search?q=falcon+cove+middle+weston" target="_blank" class="external-link">Falcon Cove Middle</a></strong><br>#112 FL, 98% Algebra<br>
                                 <strong><a href="https://www.google.com/search?q=tequesta+trace+middle+weston" target="_blank" class="external-link">Tequesta Trace</a></strong><br>9/10, Cambridge
                             </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public School</td>
                             <td>Top 5% in Florida<br>State champions<br>Cambridge programs</td>
                             <td>18,000 Jewish residents<br>Latin-Jewish mix<br>15% Israeli families</td>
                             <td><a href="https://www.ymcabroward.org/locations/weston" target="_blank" class="external-link">YMCA</a> Olympic pool<br>Cyclones accessible<br>Year-round programs</td>
@@ -1754,6 +1801,7 @@
                             <td>
                                 <strong><a href="https://www.google.com/search?q=pioneer+middle+school+cooper+city" target="_blank" class="external-link">Pioneer Middle</a></strong><br>#140 FL<br>Cambridge program
                             </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public School</td>
                             <td>A-rated schools<br>Above state avg<br>Strong gifted prog</td>
                             <td>Growing Israeli presence<br>2,664 Jewish HH<br>Family-focused</td>
                             <td><span class="badge badge-safety"><a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> Home</span><br>USA Swimming<br>Top program</td>
@@ -1771,6 +1819,7 @@
                                 <strong><a href="https://www.google.com/search?q=indian+ridge+middle+davie" target="_blank" class="external-link">Indian Ridge</a></strong><br>7/10, HS credits<br>
                                 <strong><a href="https://www.google.com/search?q=nova+middle+school+davie" target="_blank" class="external-link">Nova Middle</a></strong><br>6/10, Diverse
                             </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public School</td>
                             <td>Mixed ratings<br>Near universities<br>Some strong programs</td>
                             <td><span class="badge badge-safety">Israeli Hub</span><br>4,032 Jewish HH<br>Hebrew everywhere</td>
                             <td><a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a> pool on-site<br>Pine Island Aquatic<br>Multiple options</td>
@@ -1782,13 +1831,14 @@
                             <td><strong><a href="https://www.cityofaventura.com/" target="_blank" class="external-link">Aventura</a></strong><br><span class="badge badge-international">International Hub</span><br><span class="badge badge-secular">K-8 Charter</span></td>
                             <td colspan="2">
                                 <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
-                                    <strong>✅ SAME SCHOOL - <a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">Aventura City of Excellence (ACES)</a></strong>
+                                    <strong>✅ SAME SCHOOL - <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">Aventura City of Excellence (ACES)</a></strong>
                                 </div>
                                 <strong>Both Children:</strong> ACES is a K-8 charter school<br>
                                 <strong>9yo:</strong> 4th grade at ACES<br>
                                 <strong>13yo:</strong> 8th grade at ACES<br>
                                 <strong>Benefits:</strong> One school, innovative curriculum, international community
                             </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public Charter</td>
                             <td>A-rated charter<br>Opened 2003<br>Flexible curriculum<br>Strong academics</td>
                             <td><span class="badge badge-international">40% International</span><br>Israeli, Brazilian, French<br>Russian, Argentine<br>Manhattan-like diversity</td>
                             <td>Beach proximity<br>Building pools<br>Aquatic centers<br>Ocean access</td>
@@ -1800,13 +1850,21 @@
                             <td><strong><a href="https://www.citynmb.com/" target="_blank" class="external-link">North Miami Beach</a></strong><br><span class="badge">Hillel Option</span></td>
                             <td colspan="2">
                                 <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
-                                    <strong>✅ SAME SCHOOL Option - <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel Community School</a> (K-12)</strong>
+                                    <strong>✅ SAME SCHOOL Option - <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel Community School</a> (K-12)</strong>
                                 </div>
                                 <strong>Both Children at Hillel:</strong><br>
                                 <strong>9yo:</strong> Lower School<br>
                                 <strong>13yo:</strong> Middle School<br>
-                                <strong>Benefits:</strong> #3 Jewish school in Miami, 1,300+ students, 7:1 ratio<br>
                                 <strong>Alternative:</strong> Strong public schools also available
+                            </td>
+                            <td>
+                                <div class="tuition-highlight">
+                                    <strong>Hillel:</strong><br>
+                                    <span class="tuition-amount">$72,800/year</span><br>
+                                    (both children)<br>
+                                    <strong>OR</strong><br>
+                                    <span class="badge badge-tuition">FREE</span> Public
+                                </div>
                             </td>
                             <td>#3 Jewish school Miami<br>Deep Jewish identity<br>Strong academics<br>Large resources</td>
                             <td>Mixed Orthodox/Secular<br>Beach community<br>International presence<br>Growing Israeli pop</td>
@@ -1824,11 +1882,17 @@
                                 Both children at David Posnack Jewish Day School<br>
                                 Integrated curriculum, Hebrew maintenance, Israeli culture focus
                             </td>
+                            <td>
+                                <div class="tuition-highlight">
+                                    <span class="tuition-amount">$46,000/year</span><br>
+                                    (both children)
+                                </div>
+                            </td>
                             <td>#1 Jewish school FL<br>College prep focus<br>Small classes (8:1)</td>
                             <td><span class="badge badge-safety">Perfect for Israelis</span><br>Hebrew maintained<br>Israeli culture central</td>
                             <td><a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a> pool included<br>Full programs<br>Swim team access</td>
                             <td>Same as Davie: 20/1000<br>Secure campus</td>
-                            <td>Davie prices +<br>Tuition: ~$50K/yr<br>(both children)</td>
+                            <td>Davie prices +<br>Tuition: $46K/yr<br>(both children)</td>
                             <td><strong id="posnack-score">88%</strong></td>
                         </tr>
                         <tr>
@@ -1840,11 +1904,17 @@
                                 #1 Private school in FL, 88 Merit Scholars<br>
                                 Pre-professional tracks, rolling admissions
                             </td>
+                            <td>
+                                <div class="tuition-highlight">
+                                    <span class="tuition-amount">$85,400/year</span><br>
+                                    (both children)
+                                </div>
+                            </td>
                             <td>Top 1% nationally<br>88 Merit Scholars<br>6 career tracks</td>
                             <td>Diverse international<br>Not Israeli-focused<br>25% international</td>
                             <td>Limited on-campus<br>Partner facilities<br>30 min to pools</td>
                             <td>Plantation area<br>Private security</td>
-                            <td>Varies + Tuition<br>~$85K/yr total<br>(both children)</td>
+                            <td>Varies + Tuition<br>$85.4K/yr total<br>(both children)</td>
                             <td><strong id="heritage-score">75%</strong></td>
                         </tr>
                     </tbody>
@@ -1856,17 +1926,22 @@
         <div id="qualitative" class="content-section">
             <div class="qualitative-section">
                 <h2>Extended Community Insights - Including All Areas</h2>
-                <p style="color: #7f8c8d; margin-bottom: 20px;">Deep insights from Israeli families living in all areas, including Aventura and North Miami Beach communities.</p>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Deep insights from Israeli families living in all areas, including Aventura and North Miami Beach communities, with tuition considerations.</p>
                 
                 <div class="qualitative-grid">
                     <div class="qualitative-card" style="border-left-color: #ff6b6b;">
                         <h4>🌴 Aventura: Manhattan of the South</h4>
-                        <p>Aventura is where Israeli families who miss NYC's urban energy feel most at home. You'll hear Hebrew, Portuguese, French, and Russian in the elevator. The buildings have amenities that rival Manhattan's best - pools, gyms, spas, and concierge services. <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Aventura Mall</a> is your backyard, and you can actually walk to restaurants and shops. The downside? No yard for the kids, and the "Miami lifestyle" can be materialistic. Israeli families love that kids can be more independent here - they can walk to friends in the same building. The international vibe means your kids will have friends from everywhere, not just America.</p>
+                        <p>Aventura is where Israeli families who miss NYC's urban energy feel most at home. You'll hear Hebrew, Portuguese, French, and Russian in the elevator. The buildings have amenities that rival Manhattan's best - pools, gyms, spas, and concierge services. <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Aventura Mall</a> is your backyard, and you can actually walk to restaurants and shops. The downside? No yard for the kids, and the "Miami lifestyle" can be materialistic. Israeli families love that kids can be more independent here - they can walk to friends in the same building. The international vibe means your kids will have friends from everywhere, not just America. Best of all - ACES charter school is FREE, so you save tuition costs while living in luxury.</p>
                     </div>
                     
                     <div class="qualitative-card" style="border-left-color: #4ecdc4;">
                         <h4>🏖️ North Miami Beach: Beach Life Balance</h4>
-                        <p>North Miami Beach offers something unique - actual beach proximity with a strong Jewish infrastructure. <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel School</a> has both religious and secular Jewish families, creating an interesting dynamic. Some Israeli families find it perfect because kids get Jewish education without Orthodox intensity. Others worry about the religious influence. The area is gentrifying rapidly - what was sketchy 5 years ago is now trendy. You're 15 minutes from the beach, 20 from Aventura's shopping, and housing is still (relatively) affordable. The orthodox community is visible but not dominant. Many Israelis here are in real estate or tech.</p>
+                        <p>North Miami Beach offers something unique - actual beach proximity with a strong Jewish infrastructure. <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel School</a> costs $36,400 per child annually but has both religious and secular Jewish families, creating an interesting dynamic. Some Israeli families find it perfect because kids get Jewish education without Orthodox intensity. Others worry about the religious influence. The area is gentrifying rapidly - what was sketchy 5 years ago is now trendy. You're 15 minutes from the beach, 20 from Aventura's shopping, and housing is still (relatively) affordable. The orthodox community is visible but not dominant. Many Israelis here are in real estate or tech. Public schools are free if you want to save on tuition.</p>
+                    </div>
+                    
+                    <div class="qualitative-card" style="border-left-color: #f39c12;">
+                        <h4>💰 The Tuition Factor Reality Check</h4>
+                        <p>Here's the truth about private school tuition that NYC families often underestimate: <a href="https://www.ahschool.com/" target="_blank" class="external-link">American Heritage</a> at $85,400/year for two kids is like paying a second mortgage. <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> at $72,800/year is significant. Even <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> at $46,000/year adds up. Many families start with dreams of private school but realize the public schools in Weston and Cooper City are excellent and FREE. Aventura's ACES charter is also free with an international vibe. Some families compromise - one year private to ease transition, then switch to public. Others use tuition savings for enrichment: Hebrew tutors, coding camps, swim team. Remember: Florida has no state income tax, but that private school tuition can eat up the savings quickly.</p>
                     </div>
                     
                     <div class="qualitative-card">
@@ -1874,7 +1949,7 @@
                         <p>While Parkland has highly-rated schools, recent reports of antisemitic incidents are concerning. Jewish students faced exclusion attempts from school fairs, and vandalism was dismissed as "just vandalism" rather than being addressed as antisemitism. Despite a significant Jewish population, several Israeli families have reported feeling unwelcome. The academic excellence doesn't compensate for potential social challenges your children might face. Many families who started in Parkland have relocated to Weston or Cooper City.</p>
                     </div>
                     
-                    <div class="qualitative-card" style="border-left-color: #f39c12;">
+                    <div class="qualitative-card" style="border-left-color: #e74c3c;">
                         <h4>🏫 The District Split Challenge</h4>
                         <p>Here's what nobody tells you: <a href="https://www.browardschools.com/" target="_blank" class="external-link">Broward County</a> (Weston, Cooper City, Davie) and <a href="https://www.dadeschools.net/" target="_blank" class="external-link">Miami-Dade County</a> (Aventura, North Miami Beach) have different school calendars. Your Aventura friends' kids might have spring break a week different from your Weston friends. Teacher planning days don't align. Even start/end dates can be different. Some families find this isolating - you can't coordinate vacations with friends across county lines. Others use it strategically, booking cheaper flights during off-peak times. If you're choosing between counties, consider where most of your social circle will likely form.</p>
                     </div>
@@ -1916,6 +1991,7 @@
                             <li><strong>Food:</strong> Fuego (Argentine-Israeli owner), <a href="https://www.google.com/search?q=mozart+bakery+aventura" target="_blank" class="external-link">Mozart Bakery</a></li>
                             <li><strong>Avoid:</strong> Buildings without hurricane shutters</li>
                             <li><strong>School Alternative:</strong> Some use <a href="https://www.cushmanschool.org/" target="_blank" class="external-link">Cushman School</a> (private)</li>
+                            <li><strong>Budget Win:</strong> ACES charter school is FREE!</li>
                         </ul>
                     </div>
                     
@@ -1928,6 +2004,7 @@
                             <li><strong>Community:</strong> Lehrman School also popular with Israelis</li>
                             <li><strong>Warning:</strong> Check <a href="https://msc.fema.gov/portal/home" target="_blank" class="external-link">flood zones</a> carefully</li>
                             <li><strong>Rising Area:</strong> Keystone Islands becoming Israeli enclave</li>
+                            <li><strong>Tuition Reality:</strong> Hillel is $72,800/year for 2 kids</li>
                         </ul>
                     </div>
                 </div>
@@ -1937,14 +2014,15 @@
         <div id="details" class="content-section">
             <div class="detail-panel">
                 <h2>Complete Data Analysis - All 7 Locations</h2>
-                <p style="color: #7f8c8d; margin-bottom: 20px;">Comprehensive information for all areas including Aventura and North Miami Beach options.</p>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Comprehensive information for all areas including Aventura and North Miami Beach options with accurate tuition data.</p>
                 
                 <div class="detail-grid">
                     <div class="detail-section">
                         <h4>🌴 Aventura - The International Urban Choice</h4>
                         <ul class="detail-list">
-                            <li><strong>School Option:</strong> <a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">Aventura City of Excellence School (ACES)</a> - K-8 charter serving both children</li>
+                            <li><strong>School Option:</strong> <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">Aventura City of Excellence School (ACES)</a> - K-8 charter serving both children</li>
                             <li><strong>Academic Performance:</strong> A-rated school, innovative curriculum, opened 2003</li>
+                            <li><strong>Tuition:</strong> <span class="badge badge-tuition">FREE</span> - Public charter school</li>
                             <li><strong>Class Sizes:</strong> Average 20-22 students, charter flexibility</li>
                             <li><strong>Demographics:</strong> 40% international families - Israeli, Brazilian, French, Russian, Argentine</li>
                             <li><strong>Housing:</strong> 95% condos/apartments, luxury high-rises dominate</li>
@@ -1961,9 +2039,10 @@
                     <div class="detail-section">
                         <h4>🏖️ North Miami Beach - The Beach Community Choice</h4>
                         <ul class="detail-list">
-                            <li><strong>Private Option:</strong> <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel Community School</a> - #3 Jewish school in Miami</li>
+                            <li><strong>Private Option:</strong> <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel Community School</a> - #3 Jewish school in Miami</li>
                             <li><strong>Hillel Details:</strong> K-12, 1,300+ students, 7:1 student-teacher ratio</li>
-                            <li><strong>Public Options:</strong> <a href="https://www.google.com/search?q=ojus+elementary+school" target="_blank" class="external-link">Ojus Elementary</a> (7/10), <a href="https://www.google.com/search?q=highland+oaks+middle+school" target="_blank" class="external-link">Highland Oaks Middle</a> (6/10)</li>
+                            <li><strong>Tuition (Hillel):</strong> <span class="tuition-amount">$36,400/year per child ($72,800 for both)</span></li>
+                            <li><strong>Public Options:</strong> <a href="https://www.google.com/search?q=ojus+elementary+school" target="_blank" class="external-link">Ojus Elementary</a> (7/10), <a href="https://www.google.com/search?q=highland+oaks+middle+school" target="_blank" class="external-link">Highland Oaks Middle</a> (6/10) - <span class="badge badge-tuition">FREE</span></li>
                             <li><strong>Jewish Community:</strong> Mix of Orthodox and secular, growing Israeli population</li>
                             <li><strong>Beach Access:</strong> 10-15 minutes to beach, water sports culture</li>
                             <li><strong>Housing Mix:</strong> Single family homes, condos, some waterfront</li>
@@ -1989,17 +2068,19 @@
                             <li><strong>School Boundaries:</strong> Can change yearly, verify before buying</li>
                             <li><strong>Traffic Patterns:</strong> Some areas have 1-hour school commutes</li>
                             <li><strong>Summer Camps:</strong> Book by February or lose out</li>
+                            <li><strong>Private School Deposits:</strong> Often non-refundable, $2,500-5,000</li>
                         </ul>
                     </div>
                     
                     <div class="detail-section">
                         <h4>📊 Decision Matrix Factors</h4>
                         <ul class="detail-list">
-                            <li><strong>Both Kids Same School:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a>, <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a>, <a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">ACES</a> (K-8), <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel</a></li>
+                            <li><strong>Both Kids Same School:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> ($46K), <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a> ($85.4K), <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">ACES</a> (FREE), <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> ($72.8K)</li>
+                            <li><strong>Free Education Options:</strong> All public schools, ACES charter</li>
                             <li><strong>Highest Israeli Concentration:</strong> Aventura, Davie, North Miami Beach</li>
                             <li><strong>Best Swimming Programs:</strong> Cooper City (<a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a>), Weston (<a href="https://www.ymcabroward.org/locations/weston" target="_blank" class="external-link">YMCA</a>)</li>
                             <li><strong>Game Design Access:</strong> Davie (NSU programs), Lauderhill magnet</li>
-                            <li><strong>Most Affordable:</strong> Davie, parts of Cooper City</li>
+                            <li><strong>Most Affordable:</strong> Davie public schools, parts of Cooper City</li>
                             <li><strong>Best Weather/Beach:</strong> Aventura, North Miami Beach</li>
                             <li><strong>Safest:</strong> Weston, Cooper City, Aventura buildings</li>
                             <li><strong>Most NYC-like:</strong> Aventura (urban, walkable, diverse)</li>
@@ -2013,18 +2094,19 @@
                     <div class="detail-section">
                         <h4>💰 Full Cost Analysis (Annual)</h4>
                         <ul class="detail-list">
-                            <li><strong>Weston Public:</strong> $0 tuition + $8-12K living = $96-144K total</li>
-                            <li><strong>Cooper City Public:</strong> $0 tuition + $7-10K living = $84-120K total</li>
-                            <li><strong>Davie Public:</strong> $0 tuition + $7-9K living = $84-108K total</li>
-                            <li><strong>Aventura ACES:</strong> $0 tuition + $9-13K living = $108-156K total</li>
-                            <li><strong>NMB Public:</strong> $0 tuition + $8-11K living = $96-132K total</li>
-                            <li><strong>Posnack:</strong> $50K tuition + $7-9K living = $134-158K total</li>
-                            <li><strong>Heritage:</strong> $85K tuition + $8-10K living = $176-205K total</li>
-                            <li><strong>Hillel:</strong> $45K tuition + $8-11K living = $144-177K total</li>
+                            <li><strong>Weston Public:</strong> $0 tuition + $144-216K living = $144-216K total</li>
+                            <li><strong>Cooper City Public:</strong> $0 tuition + $120-180K living = $120-180K total</li>
+                            <li><strong>Davie Public:</strong> $0 tuition + $114-168K living = $114-168K total</li>
+                            <li><strong>Aventura ACES:</strong> $0 tuition + $150-228K living = $150-228K total</li>
+                            <li><strong>NMB Public:</strong> $0 tuition + $132-192K living = $132-192K total</li>
+                            <li><strong>NMB + Hillel:</strong> $72.8K tuition + $132-192K living = $205-265K total</li>
+                            <li><strong>Davie + Posnack:</strong> $46K tuition + $114-168K living = $160-214K total</li>
+                            <li><strong>Heritage:</strong> $85.4K tuition + $120-200K living = $205-285K total</li>
                         </ul>
                         <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
-                            * Living costs include all monthly expenses except housing<br>
-                            * Add housing: Rent ($30-60K/year) or mortgage + taxes + insurance
+                            * Living costs include housing + all monthly expenses<br>
+                            * Private school tuition for 2 children included where applicable<br>
+                            * Financial aid may be available at private schools
                         </p>
                     </div>
                     
@@ -2050,13 +2132,14 @@
                 <div class="success-box">
                     <strong>Final Recommendation Framework:</strong> Based on your priorities:
                     <ul style="margin-top: 10px;">
-                        <li><strong>If Israeli community is #1:</strong> Davie + <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> or Aventura</li>
-                        <li><strong>If academic excellence matters most:</strong> Weston public or <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a></li>
-                        <li><strong>If swimming is crucial:</strong> Cooper City (<a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> base)</li>
-                        <li><strong>If you want urban/international:</strong> Aventura (Manhattan feel)</li>
-                        <li><strong>If you want best value:</strong> Cooper City public schools</li>
-                        <li><strong>If you want beach lifestyle:</strong> North Miami Beach + <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel</a></li>
-                        <li><strong>If you want one school for both kids:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a>, <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a>, <a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">ACES</a>, or <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Hillel</a></li>
+                        <li><strong>If budget is crucial:</strong> Public schools in Weston/Cooper City or ACES in Aventura</li>
+                        <li><strong>If Israeli community is #1:</strong> Davie + <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> ($46K) or Aventura (FREE)</li>
+                        <li><strong>If academic excellence matters most:</strong> Weston public (FREE) or <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a> ($85.4K)</li>
+                        <li><strong>If swimming is crucial:</strong> Cooper City (<a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> base) - FREE schools</li>
+                        <li><strong>If you want urban/international:</strong> Aventura (Manhattan feel) - FREE school</li>
+                        <li><strong>If you want best value:</strong> Cooper City public schools - FREE</li>
+                        <li><strong>If you want beach lifestyle:</strong> North Miami Beach (public FREE or <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> $72.8K)</li>
+                        <li><strong>If you want one school for both kids:</strong> Compare costs: ACES (FREE) vs. Posnack ($46K) vs. Hillel ($72.8K) vs. Heritage ($85.4K)</li>
                     </ul>
                 </div>
             </div>
@@ -2072,7 +2155,7 @@
             document.getElementById('daysLeft').textContent = daysLeft;
         }
         
-        // Extended data structure including new areas
+        // Extended data structure including new areas with tuition information
         const locationData = {
             weston: {
                 name: "Weston Public Schools",
@@ -2087,6 +2170,7 @@
                         {name: "Tequesta Trace Middle", coords: [26.0960, -80.3950], data: "9/10 GreatSchools<br>20+ clubs offered<br>A-rated FDOE<br>HS credits available"}
                     ]
                 },
+                tuition: 0, // Public school - free
                 scores: {
                     academic: 100,
                     stem: 90,
@@ -2096,6 +2180,7 @@
                     swimming: 95,
                     safety: 100,
                     luxury: 95,
+                    tuition: 100, // Free = best score
                     cost: 100,
                     international: 60,
                     beach: 30,
@@ -2120,6 +2205,7 @@
                         {name: "Pioneer Middle School", coords: [26.0550, -80.2700], data: "#140 in Florida<br>Cambridge program<br>TV production<br>Near pool complex"}
                     ]
                 },
+                tuition: 0, // Public school - free
                 scores: {
                     academic: 85,
                     stem: 85,
@@ -2129,6 +2215,7 @@
                     swimming: 100,
                     safety: 90,
                     luxury: 75,
+                    tuition: 100, // Free = best score
                     cost: 100,
                     international: 50,
                     beach: 40,
@@ -2154,6 +2241,7 @@
                         {name: "Nova Middle School", coords: [26.0850, -80.2550], data: "6/10 GreatSchools<br>Mixed reviews<br>Basic programs<br>Diverse student body"}
                     ]
                 },
+                tuition: 0, // Public school - free
                 scores: {
                     academic: 75,
                     stem: 70,
@@ -2163,6 +2251,7 @@
                     swimming: 80,
                     safety: 75,
                     luxury: 70,
+                    tuition: 100, // Free = best score
                     cost: 100,
                     international: 70,
                     beach: 45,
@@ -2180,12 +2269,13 @@
                 coords: [25.9561, -80.1394],
                 schools: {
                     elementary: [
-                        {name: "Aventura City of Excellence (K-8)", coords: [25.9550, -80.1400], data: "A-rated charter school<br>Both kids same school<br>K-8 program<br>International focus"}
+                        {name: "Aventura City of Excellence (K-8)", coords: [25.9550, -80.1400], data: "A-rated charter school<br>Both kids same school<br>K-8 program<br>International focus<br>FREE tuition"}
                     ],
                     middle: [
-                        {name: "ACES Middle School Division", coords: [25.9550, -80.1400], data: "Same campus as elementary<br>Innovative curriculum<br>Flexible programming<br>Strong academics"}
+                        {name: "ACES Middle School Division", coords: [25.9550, -80.1400], data: "Same campus as elementary<br>Innovative curriculum<br>Flexible programming<br>Strong academics<br>FREE tuition"}
                     ]
                 },
+                tuition: 0, // Charter school - free
                 scores: {
                     academic: 90,
                     stem: 85,
@@ -2195,6 +2285,7 @@
                     swimming: 75,
                     safety: 85,
                     luxury: 100,
+                    tuition: 100, // Free = best score
                     cost: 70,
                     international: 100,
                     beach: 70,
@@ -2212,14 +2303,15 @@
                 coords: [25.9331, -80.1625],
                 schools: {
                     elementary: [
-                        {name: "Scheck Hillel Community School", coords: [25.9300, -80.1600], data: "#3 Jewish School Miami<br>K-12 option<br>1,300+ students<br>7:1 ratio"},
-                        {name: "Ojus Elementary", coords: [25.9350, -80.1650], data: "7/10 GreatSchools<br>Public option<br>Diverse student body<br>Basic programs"}
+                        {name: "Scheck Hillel Community School", coords: [25.9300, -80.1600], data: "#3 Jewish School Miami<br>K-12 option<br>1,300+ students<br>7:1 ratio<br>$36,400/year per child"},
+                        {name: "Ojus Elementary", coords: [25.9350, -80.1650], data: "7/10 GreatSchools<br>Public option<br>Diverse student body<br>Basic programs<br>FREE tuition"}
                     ],
                     middle: [
-                        {name: "Hillel Middle School", coords: [25.9300, -80.1600], data: "Same campus K-12<br>Jewish identity focus<br>Strong academics<br>Large resources"},
-                        {name: "Highland Oaks Middle", coords: [25.9400, -80.1700], data: "6/10 GreatSchools<br>Public option<br>Standard programs<br>Mixed reviews"}
+                        {name: "Hillel Middle School", coords: [25.9300, -80.1600], data: "Same campus K-12<br>Jewish identity focus<br>Strong academics<br>Large resources<br>$36,400/year per child"},
+                        {name: "Highland Oaks Middle", coords: [25.9400, -80.1700], data: "6/10 GreatSchools<br>Public option<br>Standard programs<br>Mixed reviews<br>FREE tuition"}
                     ]
                 },
+                tuition: 0, // Public option available, or $72,800 for Hillel
                 scores: {
                     academic: 80,
                     stem: 75,
@@ -2229,6 +2321,7 @@
                     swimming: 85,
                     safety: 70,
                     luxury: 75,
+                    tuition: 60, // Mixed - public free, private expensive
                     cost: 85,
                     international: 75,
                     beach: 90,
@@ -2246,12 +2339,13 @@
                 coords: [26.0641, -80.2549],
                 schools: {
                     elementary: [
-                        {name: "David Posnack Jewish Day School K-5", coords: [26.0641, -80.2549], data: "#1 Jewish School FL<br>STEM Lab & MakerSpace<br>Hebrew language<br>8:1 ratio"}
+                        {name: "David Posnack Jewish Day School K-5", coords: [26.0641, -80.2549], data: "#1 Jewish School FL<br>STEM Lab & MakerSpace<br>Hebrew language<br>8:1 ratio<br>$23,000/year per child"}
                     ],
                     middle: [
-                        {name: "David Posnack Jewish Day School 6-8", coords: [26.0641, -80.2549], data: "Coding 101, Robotics<br>Video Production<br>1:1 laptop program<br>Israeli culture focus"}
+                        {name: "David Posnack Jewish Day School 6-8", coords: [26.0641, -80.2549], data: "Coding 101, Robotics<br>Video Production<br>1:1 laptop program<br>Israeli culture focus<br>$23,000/year per child"}
                     ]
                 },
+                tuition: 46000, // $23,000 per child x 2
                 scores: {
                     academic: 95,
                     stem: 95,
@@ -2261,6 +2355,7 @@
                     swimming: 85,
                     safety: 75,
                     luxury: 70,
+                    tuition: 50, // Moderate tuition
                     cost: 30,
                     international: 80,
                     beach: 45,
@@ -2278,12 +2373,13 @@
                 coords: [26.1259, -80.2338],
                 schools: {
                     elementary: [
-                        {name: "American Heritage Lower School", coords: [26.1259, -80.2338], data: "#1 Private K-12 FL<br>Full academic program<br>130+ arts courses<br>Rolling admission"}
+                        {name: "American Heritage Lower School", coords: [26.1259, -80.2338], data: "#1 Private K-12 FL<br>Full academic program<br>130+ arts courses<br>Rolling admission<br>$42,700/year per child"}
                     ],
                     middle: [
-                        {name: "American Heritage Middle School", coords: [26.1259, -80.2338], data: "Engineering intro<br>Design & Modeling<br>Pre-professional tracks<br>88 Merit Scholars"}
+                        {name: "American Heritage Middle School", coords: [26.1259, -80.2338], data: "Engineering intro<br>Design & Modeling<br>Pre-professional tracks<br>88 Merit Scholars<br>$42,700/year per child"}
                     ]
                 },
+                tuition: 85400, // $42,700 per child x 2
                 scores: {
                     academic: 100,
                     stem: 100,
@@ -2293,6 +2389,7 @@
                     swimming: 60,
                     safety: 80,
                     luxury: 90,
+                    tuition: 20, // Most expensive option
                     cost: 20,
                     international: 70,
                     beach: 50,
@@ -2301,7 +2398,7 @@
                 details: {
                     population: "Diverse, not Israeli-focused",
                     safety: "Secure private campus",
-                    homePrice: "Varies + $42K tuition",
+                    homePrice: "Varies + $85.4K tuition",
                     commute: "25 min to JCC"
                 }
             }
@@ -2325,8 +2422,8 @@
                         <h3 style="color: #e74c3c;">Map Loading Error</h3>
                         <p>The interactive map requires external libraries. Here's what you need to know about locations:</p>
                         <ul style="text-align: left; max-width: 600px; margin: 20px auto;">
-                            <li><strong>Broward County:</strong> Weston, Cooper City, Davie</li>
-                            <li><strong>Miami-Dade County:</strong> Aventura, North Miami Beach</li>
+                            <li><strong>Broward County:</strong> Weston, Cooper City, Davie - Same school calendar, policies, and registration</li>
+                            <li><strong>Miami-Dade County:</strong> Aventura, North Miami Beach - Different calendar (may start/end on different dates), separate registration system</li>
                             <li><strong>Different Counties = Different Calendars!</strong></li>
                         </ul>
                     </div>
@@ -2467,7 +2564,7 @@
             });
         }
         
-        // Weight management with extended factors
+        // Weight management with extended factors including tuition
         let weights = {
             academic: 50,
             stem: 50,
@@ -2477,6 +2574,7 @@
             swimming: 50,
             safety: 50,
             luxury: 50,
+            tuition: 50,
             cost: 50,
             international: 50,
             beach: 50,
@@ -2493,12 +2591,13 @@
         
         function setPreset(preset) {
             const presets = {
-                academic: { academic: 90, stem: 80, arts: 70, gamedesign: 50, community: 40, swimming: 50, safety: 80, luxury: 60, cost: 60, international: 50, beach: 40, traffic: 60 },
-                community: { academic: 60, stem: 60, arts: 50, gamedesign: 50, community: 100, swimming: 60, safety: 70, luxury: 50, cost: 50, international: 70, beach: 50, traffic: 70 },
-                swimming: { academic: 70, stem: 60, arts: 50, gamedesign: 40, community: 50, swimming: 100, safety: 70, luxury: 50, cost: 50, international: 40, beach: 60, traffic: 70 },
-                gamedesign: { academic: 70, stem: 80, arts: 60, gamedesign: 100, community: 50, swimming: 40, safety: 60, luxury: 40, cost: 50, international: 60, beach: 30, traffic: 70 },
-                international: { academic: 80, stem: 70, arts: 70, gamedesign: 60, community: 80, swimming: 60, safety: 70, luxury: 80, cost: 50, international: 100, beach: 70, traffic: 50 },
-                balanced: { academic: 70, stem: 70, arts: 60, gamedesign: 60, community: 70, swimming: 60, safety: 80, luxury: 60, cost: 70, international: 60, beach: 60, traffic: 70 }
+                academic: { academic: 90, stem: 80, arts: 70, gamedesign: 50, community: 40, swimming: 50, safety: 80, luxury: 60, tuition: 40, cost: 60, international: 50, beach: 40, traffic: 60 },
+                community: { academic: 60, stem: 60, arts: 50, gamedesign: 50, community: 100, swimming: 60, safety: 70, luxury: 50, tuition: 50, cost: 50, international: 70, beach: 50, traffic: 70 },
+                swimming: { academic: 70, stem: 60, arts: 50, gamedesign: 40, community: 50, swimming: 100, safety: 70, luxury: 50, tuition: 50, cost: 50, international: 40, beach: 60, traffic: 70 },
+                gamedesign: { academic: 70, stem: 80, arts: 60, gamedesign: 100, community: 50, swimming: 40, safety: 60, luxury: 40, tuition: 50, cost: 50, international: 60, beach: 30, traffic: 70 },
+                international: { academic: 80, stem: 70, arts: 70, gamedesign: 60, community: 80, swimming: 60, safety: 70, luxury: 80, tuition: 60, cost: 50, international: 100, beach: 70, traffic: 50 },
+                budget: { academic: 70, stem: 60, arts: 50, gamedesign: 50, community: 60, swimming: 50, safety: 70, luxury: 40, tuition: 100, cost: 90, international: 50, beach: 40, traffic: 60 },
+                balanced: { academic: 70, stem: 70, arts: 60, gamedesign: 60, community: 70, swimming: 60, safety: 80, luxury: 60, tuition: 70, cost: 70, international: 60, beach: 60, traffic: 70 }
             };
             
             const selectedPreset = presets[preset];
@@ -2540,12 +2639,15 @@
                 
                 const programHighlights = getProgramHighlights(location.key);
                 const schoolAssignment = getSchoolAssignment(location.key);
+                const tuitionInfo = getTuitionInfo(location.key);
                 
                 rankCard.innerHTML = `
                     <div class="rank-number">${index + 1}</div>
                     <div class="ranking-content">
                         <div class="ranking-title">${location.name}</div>
                         <div class="ranking-subtitle">${location.details.population} • ${location.details.safety} crime rate</div>
+                        
+                        ${tuitionInfo}
                         
                         <div class="score-bar">
                             <div class="score-fill" style="width: ${location.totalScore}%">${location.totalScore}%</div>
@@ -2566,8 +2668,8 @@
                                 <div class="score-item-value">${location.scores.community}%</div>
                             </div>
                             <div class="score-item">
-                                <div class="score-item-label">International</div>
-                                <div class="score-item-value">${location.scores.international}%</div>
+                                <div class="score-item-label">Tuition Value</div>
+                                <div class="score-item-value">${location.scores.tuition}%</div>
                             </div>
                             <div class="score-item">
                                 <div class="score-item-label">Safety</div>
@@ -2594,6 +2696,19 @@
             document.getElementById('nmb-score').textContent = calculateScore(locationData.nmb) + '%';
             document.getElementById('posnack-score').textContent = calculateScore(locationData.posnack) + '%';
             document.getElementById('heritage-score').textContent = calculateScore(locationData.heritage) + '%';
+        }
+        
+        function getTuitionInfo(key) {
+            const tuitionData = {
+                weston: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="badge badge-tuition">FREE</span> - Public Schools</div>',
+                cooper: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="badge badge-tuition">FREE</span> - Public Schools</div>',
+                davie: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="badge badge-tuition">FREE</span> - Public Schools</div>',
+                aventura: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="badge badge-tuition">FREE</span> - Public Charter School</div>',
+                nmb: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="badge badge-tuition">FREE</span> Public OR <span class="tuition-amount">$72,800/year</span> (Hillel)</div>',
+                posnack: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="tuition-amount">$46,000/year</span> (both children)</div>',
+                heritage: '<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="tuition-amount">$85,400/year</span> (both children)</div>'
+            };
+            return tuitionData[key] || '';
         }
         
         function getSchoolAssignment(key) {
@@ -2640,19 +2755,20 @@
                 aventura: `
                     <div style="margin-top: 10px;">
                         <div style="margin-bottom: 8px;">
-                            <strong>👦 Both Children:</strong> <span style="color: #e91e63;"><a href="https://www.aventuracityofexcellence.org/" target="_blank" class="external-link">Aventura City of Excellence School (ACES)</a></span>
+                            <strong>👦 Both Children:</strong> <span style="color: #e91e63;"><a href="https://www.aventuracharter.org/" target="_blank" class="external-link">Aventura City of Excellence School (ACES)</a></span>
                         </div>
                         <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
                             ✅ <strong>SAME K-8 SCHOOL!</strong> One drop-off, unified schedule<br>
-                            🌍 <strong>International community, Miami-Dade district</strong>
+                            🌍 <strong>International community, Miami-Dade district</strong><br>
+                            💰 <strong>FREE public charter school</strong>
                         </div>
                     </div>
                 `,
                 nmb: `
                     <div style="margin-top: 10px;">
                         <div style="margin-bottom: 8px;">
-                            <strong>Option 1:</strong> <span style="color: #e91e63;">Both at <a href="https://www.hilleldayschool.org/" target="_blank" class="external-link">Scheck Hillel</a> (K-12)</span><br>
-                            <strong>Option 2:</strong> <span style="color: #2e7d32;"><a href="https://www.google.com/search?q=ojus+elementary+school" target="_blank" class="external-link">Ojus Elem</a></span> + <span style="color: #1976d2;"><a href="https://www.google.com/search?q=highland+oaks+middle+school" target="_blank" class="external-link">Highland Oaks Middle</a></span>
+                            <strong>Option 1:</strong> <span style="color: #e91e63;">Both at <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel</a> (K-12) - $72,800/year</span><br>
+                            <strong>Option 2:</strong> <span style="color: #2e7d32;"><a href="https://www.google.com/search?q=ojus+elementary+school" target="_blank" class="external-link">Ojus Elem</a></span> + <span style="color: #1976d2;"><a href="https://www.google.com/search?q=highland+oaks+middle+school" target="_blank" class="external-link">Highland Oaks Middle</a></span> - FREE
                         </div>
                         <div style="margin-top: 8px; padding: 8px; background-color: #d1ecf1; border-radius: 4px;">
                             🏖️ <strong>Beach proximity, Miami-Dade district</strong>
@@ -2666,7 +2782,8 @@
                         </div>
                         <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
                             ✅ <strong>SAME K-12 SCHOOL!</strong> Israeli culture focus<br>
-                            🏠 <strong>Live in Davie (Broward County)</strong>
+                            🏠 <strong>Live in Davie (Broward County)</strong><br>
+                            💰 <strong>$46,000/year for both children</strong>
                         </div>
                     </div>
                 `,
@@ -2677,7 +2794,8 @@
                         </div>
                         <div style="margin-top: 8px; padding: 8px; background-color: #d4edda; border-radius: 4px;">
                             ✅ <strong>SAME K-12 SCHOOL!</strong> Elite academics<br>
-                            📍 <strong>Plantation location (Broward County)</strong>
+                            📍 <strong>Plantation location (Broward County)</strong><br>
+                            💰 <strong>$85,400/year for both children</strong>
                         </div>
                     </div>
                 `
@@ -2687,13 +2805,13 @@
         
         function getProgramHighlights(key) {
             const highlights = {
-                weston: "Robotics champions, Cambridge program, YMCA swimming",
-                cooper: "STEAM with coding, Cyclones swim team, Cambridge",
-                davie: "Near NSU workshops, JCC programs, game design access",
-                aventura: "International community, beach proximity, urban lifestyle",
-                nmb: "Beach access, Hillel school option, growing community",
-                posnack: "Coding/Robotics/MakerSpace, Hebrew, Israeli culture",
-                heritage: "130+ arts, pre-professional tracks, engineering"
+                weston: "Robotics champions, Cambridge program, YMCA swimming, FREE education",
+                cooper: "STEAM with coding, Cyclones swim team, Cambridge, FREE education",
+                davie: "Near NSU workshops, JCC programs, game design access, FREE education",
+                aventura: "International community, beach proximity, urban lifestyle, FREE charter",
+                nmb: "Beach access, Hillel school option, growing community, public FREE option",
+                posnack: "Coding/Robotics/MakerSpace, Hebrew, Israeli culture, $46K tuition",
+                heritage: "130+ arts, pre-professional tracks, engineering, $85.4K tuition"
             };
             return highlights[key] || "";
         }
