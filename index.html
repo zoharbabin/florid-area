@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florida School & Community Decision Platform - Complete Analysis with Tuition</title>
+    <!-- Leaflet CSS and JS from approved cdnjs.cloudflare.com -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Florida School & Community Decision Platform</h1>
+            <p class="subtitle">Complete Analysis Including All Areas with Accurate Tuition Data</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="metric-card">
+                <div class="metric-label">Days Until Move</div>
+                <div class="metric-value" id="daysLeft">58</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Schools Analyzed</div>
+                <div class="metric-value">31</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Communities Compared</div>
+                <div class="metric-value">7</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Israeli Families in Region</div>
+                <div class="metric-value">25,000+</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Annual Tuition Range</div>
+                <div class="metric-value">$0-85K</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Decision Factors</div>
+                <div class="metric-value">13</div>
+            </div>
+        </div>
+        
+        <div class="decision-helper">
+            <h3>Quick Start: What matters most to your family?</h3>
+            <div class="helper-buttons">
+                <button class="helper-btn" onclick="setPreset('academic')">🎓 Academic Excellence</button>
+                <button class="helper-btn" onclick="setPreset('community')">🏡 Israeli Community</button>
+                <button class="helper-btn" onclick="setPreset('swimming')">🏊 Swimming Focus</button>
+                <button class="helper-btn" onclick="setPreset('gamedesign')">🎮 Game Design Path</button>
+                <button class="helper-btn" onclick="setPreset('international')">🌍 International Vibe</button>
+                <button class="helper-btn" onclick="setPreset('budget')">💰 Budget Conscious</button>
+                <button class="helper-btn" onclick="setPreset('balanced')">⚖️ Balanced Approach</button>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <h2>Customize Your Priorities</h2>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">Move the sliders to adjust how important each factor is for your family. The system will automatically recalculate the best locations based on your unique priorities, including tuition considerations.</p>
+            
+            <div class="weight-controls">
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Academic Excellence</span>
+                        <span class="weight-value" id="academic-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="academic-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>STEM Programs</span>
+                        <span class="weight-value" id="stem-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="stem-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Arts Programs</span>
+                        <span class="weight-value" id="arts-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="arts-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Game Design/Tech</span>
+                        <span class="weight-value" id="gamedesign-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="gamedesign-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Israeli Community</span>
+                        <span class="weight-value" id="community-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="community-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Swimming Programs</span>
+                        <span class="weight-value" id="swimming-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="swimming-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Safety</span>
+                        <span class="weight-value" id="safety-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="safety-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Luxury/Property Value</span>
+                        <span class="weight-value" id="luxury-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="luxury-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>💵 Tuition Affordability</span>
+                        <span class="weight-value" id="tuition-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="tuition-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Cost of Living</span>
+                        <span class="weight-value" id="cost-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="cost-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>International Community</span>
+                        <span class="weight-value" id="international-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="international-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Beach Proximity</span>
+                        <span class="weight-value" id="beach-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="beach-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+                
+                <div class="weight-control">
+                    <div class="weight-label">
+                        <span>Traffic/Commute</span>
+                        <span class="weight-value" id="traffic-value">50%</span>
+                    </div>
+                    <input type="range" class="weight-slider" id="traffic-weight" min="0" max="100" value="50" oninput="updateWeights()">
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showSection('rankings')">📊 Personalized Rankings</div>
+            <div class="tab" onclick="showSection('overall-costs')">💵 Total Cost Analysis</div>
+            <div class="tab" onclick="showSection('rentals')">🏠 Rental Market</div>
+            <div class="tab" onclick="showSection('transportation')">🚗 Getting Around</div>
+            <div class="tab" onclick="showSection('kids-life')">👦 Kids' Social Life</div>
+            <div class="tab" onclick="showSection('living')">💰 Cost of Living</div>
+            <div class="tab" onclick="showSection('map')">🗺️ Interactive Map</div>
+            <div class="tab" onclick="showSection('comparison')">⚖️ Comparison</div>
+            <div class="tab" onclick="showSection('qualitative')">💭 Insights</div>
+            <div class="tab" onclick="showSection('details')">📋 All Data</div>
+        </div>
+        
+        <div id="rankings" class="content-section active">
+            <div class="ranking-section">
+                <h2>Your Personalized Location Rankings - All Areas</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Based on your priorities, here are all locations including Aventura and North Miami Beach options. Rankings update in real-time as you adjust your preferences, now including tuition affordability as a key factor.</p>
+                
+                <div class="info-box" style="margin-bottom: 20px;">
+                    <strong>💡 Key Insight:</strong> Public schools and charter schools (ACES) have no tuition, while private schools range from $46,000 to $85,400 per year for both children. This can be a deciding factor for many families when combined with housing and living costs.
+                </div>
+                
+                <div class="ranking-grid" id="rankingGrid">
+                    <!-- Rankings will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+        
+        <div id="overall-costs" class="content-section">
+            <div class="overall-costs-section">
+                <h2>💵 Complete Cost Analysis - Your True Monthly & Annual Budget</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Understanding the REAL costs of living in each area - from housing to hurricane insurance to school tuition</p>
+                
+                <div class="cost-comparison-grid">
+                    <div class="cost-summary-card">
+                        <h4>💰 Weston - Premium Suburban (Public Schools)</h4>
+                        <div class="total-cost">$12,000-18,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> $3,500-6,500 (rent) or $4,500-8,000 (mortgage+taxes)</p>
+                            <p><strong>Living Expenses:</strong> $8,500-12,000</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span></p>
+                            <p><strong>Annual Total:</strong> $144,000-216,000</p>
+                            <p style="margin-top: 10px; color: #666;">Highest property taxes, HOA fees common ($200-500/mo), premium services</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 Cooper City - Best Value (Public Schools)</h4>
+                        <div class="total-cost">$10,000-15,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> $2,800-5,000 (rent) or $3,500-6,000 (mortgage+taxes)</p>
+                            <p><strong>Living Expenses:</strong> $7,500-10,000</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span></p>
+                            <p><strong>Annual Total:</strong> $120,000-180,000</p>
+                            <p style="margin-top: 10px; color: #666;">Best quality/price ratio, lower taxes than Weston, family-friendly</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 Davie - Most Affordable (Public Schools)</h4>
+                        <div class="total-cost">$9,500-14,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> $2,500-4,500 (rent) or $3,000-5,500 (mortgage+taxes)</p>
+                            <p><strong>Living Expenses:</strong> $7,000-9,500</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span></p>
+                            <p><strong>Annual Total:</strong> $114,000-168,000</p>
+                            <p style="margin-top: 10px; color: #666;">Most economical option, diverse housing choices, near universities</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 Aventura - Urban International (Charter School)</h4>
+                        <div class="total-cost">$12,500-19,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> $3,500-9,000 (rent) or $4,000-10,000 (mortgage+HOA)</p>
+                            <p><strong>Living Expenses:</strong> $9,000-13,000</p>
+                            <p><strong>School:</strong> <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">ACES</a> <span class="badge badge-tuition">Charter (FREE)</span></p>
+                            <p><strong>Annual Total:</strong> $150,000-228,000</p>
+                            <p style="margin-top: 10px; color: #666;">High-rise living includes amenities, walkable lifestyle saves on gas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 North Miami Beach - Beach Value</h4>
+                        <div class="total-cost">$11,000-16,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> $3,000-5,500 (rent) or $3,500-6,500 (mortgage+taxes)</p>
+                            <p><strong>Living Expenses:</strong> $8,000-11,000</p>
+                            <p><strong>School:</strong> <span class="badge badge-tuition">Public (FREE)</span> or <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> (~$73K/2 kids)</p>
+                            <p><strong>Annual Total:</strong> $132,000-192,000 (public) or $205,000-265,000 (Hillel)</p>
+                            <p style="margin-top: 10px; color: #666;">Beach lifestyle, gentrifying area, good value near water</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 Davie + Posnack School Option</h4>
+                        <div class="total-cost">$13,000-17,833/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> Davie prices (see above)</p>
+                            <p><strong>Living Expenses:</strong> $7,000-9,500</p>
+                            <p><strong>School:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> <span class="tuition-amount">$46K/year (2 kids)</span></p>
+                            <p><strong>Annual Total:</strong> $160,000-214,000</p>
+                            <p style="margin-top: 10px; color: #666;">Premium for Jewish education, one school convenience, Israeli culture</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cost-summary-card">
+                        <h4>💰 American Heritage School Option</h4>
+                        <div class="total-cost">$17,000-24,000/month</div>
+                        <div class="cost-breakdown">
+                            <p><strong>Housing:</strong> Varies by location choice</p>
+                            <p><strong>Living Expenses:</strong> $8,000-11,000</p>
+                            <p><strong>School:</strong> <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a> <span class="tuition-amount">$85.4K/year (2 kids)</span></p>
+                            <p><strong>Annual Total:</strong> $204,000-288,000</p>
+                            <p style="margin-top: 10px; color: #666;">Elite academics, 88 Merit Scholars, extensive programs</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="warning-box" style="margin-top: 30px;">
+                    <h3>⚠️ Hidden Costs NYC Families Often Miss:</h3>
+                    <ul style="margin: 10px 0; padding-left: 25px;">
+                        <li><strong>Hurricane Insurance:</strong> $3,000-5,000/year (mandatory, not included in regular homeowners)</li>
+                        <li><strong>Two Cars Required:</strong> $800-1,500/month payments + $300-500 insurance + $300-500 gas</li>
+                        <li><strong>Summer AC Bills:</strong> $300-500/month May-October</li>
+                        <li><strong>HOA Fees:</strong> $200-800/month in many communities</li>
+                        <li><strong>Hebrew Tutoring:</strong> $200-300/month per child to maintain language</li>
+                        <li><strong>Summer Camp:</strong> $3,000-5,000 per child per summer</li>
+                        <li><strong>Pool/Lawn Service:</strong> $225-375/month combined (often required by HOA)</li>
+                        <li><strong>Toll Roads:</strong> $100-300/month with SunPass</li>
+                        <li><strong>Private School Application Fees:</strong> $250-500 per school</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="rentals" class="content-section">
+            <div class="rental-section">
+                <h2>Rental Market Analysis - All Areas</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Complete rental pricing data for all areas, updated for 2025. These prices reflect the current market conditions and seasonal variations.</p>
+                
+                <div class="rental-grid">
+                    <div class="rental-card">
+                        <h4>🏡 <a href="https://www.westonfl.org/" target="_blank" class="external-link">Weston</a></h4>
+                        <div class="rental-prices">
+                            <div class="rental-price-item">
+                                <span>2BR/2BA Apartment</span>
+                                <span><strong>$2,400-$3,200/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>3BR/2BA House</span>
+                                <span><strong>$3,500-$4,800/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>4BR/3BA House</span>
+                                <span><strong>$4,500-$6,500/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>Luxury 4BR+</span>
+                                <span><strong>$6,000-$12,000/mo</strong></span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>Availability:</strong> Limited rental inventory, most homes are owner-occupied<br>
+                            <strong>Deposits:</strong> First, last, security (3 months upfront typical)<br>
+                            <strong>Pet Policy:</strong> Many HOAs restrict pets, especially large dogs<br>
+                            <strong>Best Areas:</strong> <a href="https://www.google.com/search?q=weston+hills+country+club+rentals" target="_blank" class="external-link">Weston Hills</a>, <a href="https://www.google.com/search?q=bonaventure+weston+rentals" target="_blank" class="external-link">Bonaventure</a>
+                        </p>
+                    </div>
+                    
+                    <div class="rental-card">
+                        <h4>🏊 <a href="https://www.coopercityfl.org/" target="_blank" class="external-link">Cooper City</a></h4>
+                        <div class="rental-prices">
+                            <div class="rental-price-item">
+                                <span>2BR/2BA Apartment</span>
+                                <span><strong>$2,000-$2,600/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>3BR/2BA House</span>
+                                <span><strong>$2,800-$3,800/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>4BR/3BA House</span>
+                                <span><strong>$3,500-$5,000/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>Townhomes</span>
+                                <span><strong>$2,400-$3,200/mo</strong></span>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>Availability:</strong> Better rental selection than Weston<br>
+                            <strong>Value:</strong> Best price-to-quality ratio in area<br>
+                            <strong>Flexibility:</strong> More landlords open to short-term leases<br>
+                            <strong>Near:</strong> <a href="https://www.coopercityfl.org/facilities/facility/details/Cooper-City-Sports-Complex-1" target="_blank" class="external-link">Cooper City Pool Complex</a>
+                        </p>
+                    </div>
+                    
+                    <div class="rental-card">
+                        <h4>🏡 <a href="https://www.davie-fl.gov/" target="_blank" class="external-link">Davie</a></h4>
+                        <div class="rental-prices">
+                            <div class="rental-price-item">
+                                <span>2BR/2BA Apartment</span>
+                                <span><strong>$1,800-$2,400/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>3BR/2BA House</span>
+                                <span><strong>$2,500-$3,500/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>4BR/3BA House</span>
+                                <span><strong>$3,200-$4,500/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>Ranch Properties</span>
+                                <span><strong>$4,000-$7,000/mo</strong></span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>Unique Options:</strong> Horse properties available<br>
+                            <strong>Near <a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a>:</strong> Walking distance options $2,200-$3,000<br>
+                            <strong>University Area:</strong> Near <a href="https://www.nova.edu/" target="_blank" class="external-link">Nova Southeastern University</a>
+                        </p>
+                    </div>
+                    
+                    <div class="rental-card">
+                        <h4>🌴 <a href="https://www.cityofaventura.com/" target="_blank" class="external-link">Aventura</a></h4>
+                        <div class="rental-prices">
+                            <div class="rental-price-item">
+                                <span>1BR Luxury Condo</span>
+                                <span><strong>$2,800-$4,000/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>2BR/2BA Condo</span>
+                                <span><strong>$3,500-$5,500/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>3BR/3BA Condo</span>
+                                <span><strong>$5,000-$9,000/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>Penthouse/Luxury</span>
+                                <span><strong>$8,000-$20,000/mo</strong></span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>Luxury Buildings:</strong> <a href="https://www.turnberryoceanclub.com/" target="_blank" class="external-link">Turnberry Ocean Club</a>, <a href="https://www.portovitatower.com/" target="_blank" class="external-link">Porto Vita</a><br>
+                            <strong>NYC-Style Living:</strong> High-rise luxury, walk to <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Aventura Mall</a><br>
+                            <strong>International Feel:</strong> 40% foreign buyers/renters
+                        </p>
+                    </div>
+                    
+                    <div class="rental-card">
+                        <h4>🏖️ <a href="https://www.citynmb.com/" target="_blank" class="external-link">North Miami Beach</a></h4>
+                        <div class="rental-prices">
+                            <div class="rental-price-item">
+                                <span>2BR/2BA Apartment</span>
+                                <span><strong>$2,200-$3,000/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>3BR/2BA House</span>
+                                <span><strong>$3,000-$4,200/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>4BR/3BA House</span>
+                                <span><strong>$4,000-$5,500/mo</strong></span>
+                            </div>
+                            <div class="rental-price-item">
+                                <span>Waterfront</span>
+                                <span><strong>$5,000-$10,000/mo</strong></span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                            <strong>Beach Access:</strong> 10-15 min to <a href="https://www.google.com/search?q=haulover+beach+park" target="_blank" class="external-link">Haulover Beach</a><br>
+                            <strong>Jewish Community:</strong> Near <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel School</a><br>
+                            <strong>Value:</strong> More affordable than Aventura
+                        </p>
+                    </div>
+                    
+                    <div class="rental-card">
+                        <h4>🎯 Rental Strategy Tips</h4>
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+                            <strong>For NYC Families:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li>Start with 6-12 month lease to test area</li>
+                                <li>Peak season (Dec-Apr) has 20-30% higher prices</li>
+                                <li>Many landlords require excellent credit (720+)</li>
+                                <li>Consider furnished rentals initially ($500-1000/mo premium)</li>
+                                <li>Corporate housing available in Aventura ($4-8K/mo)</li>
+                                <li>Use <a href="https://www.zillow.com/fl/rentals/" target="_blank" class="external-link">Zillow</a> or <a href="https://www.realtor.com/apartments/FL" target="_blank" class="external-link">Realtor.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="living" class="content-section">
+            <div class="living-considerations-section">
+                <h2>Cost of Living & Daily Life Considerations</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Understanding the real costs and daily realities of life in each area beyond housing and tuition.</p>
+                
+                <div class="traffic-card">
+                    <h3>🚗 Traffic Patterns & Commute Times</h3>
+                    <div class="detail-grid">
+                        <div>
+                            <h4>Morning Rush (7-9 AM)</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li><strong>Weston to Downtown Miami:</strong> 45-65 minutes</li>
+                                <li><strong>Cooper City to Fort Lauderdale:</strong> 25-35 minutes</li>
+                                <li><strong>Davie to Miami Beach:</strong> 35-50 minutes</li>
+                                <li><strong>Aventura to Downtown:</strong> 25-40 minutes</li>
+                                <li><strong>School Drop-off Congestion:</strong> Add 15-20 min</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Key Traffic Insights</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li><strong>I-75:</strong> Heavy congestion 7-9am, 4-7pm</li>
+                                <li><strong>I-95:</strong> Avoid if possible during rush hours</li>
+                                <li><strong>Turnpike:</strong> Fastest but has tolls ($5-10/day)</li>
+                                <li><strong>Local Roads:</strong> US-1 always congested</li>
+                                <li><strong>Friday Traffic:</strong> Starts at 2 PM year-round</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px; margin-bottom: 20px;">💰 Monthly Cost of Living Comparison (Family of 4)</h3>
+                <div class="cost-living-grid">
+                    <div class="cost-item">
+                        <div class="cost-item-label">Weston</div>
+                        <div class="cost-item-value">$8,500-12,000</div>
+                        <small>Excluding rent/mortgage</small>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Cooper City</div>
+                        <div class="cost-item-value">$7,500-10,000</div>
+                        <small>Best value option</small>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Davie</div>
+                        <div class="cost-item-value">$7,000-9,500</div>
+                        <small>Most affordable</small>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">Aventura</div>
+                        <div class="cost-item-value">$9,000-13,000</div>
+                        <small>Urban premium</small>
+                    </div>
+                    <div class="cost-item">
+                        <div class="cost-item-label">North Miami Beach</div>
+                        <div class="cost-item-value">$8,000-11,000</div>
+                        <small>Beach lifestyle</small>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px; margin-bottom: 20px;">🛒 Detailed Monthly Expenses Breakdown</h3>
+                <div class="detail-grid">
+                    <div class="detail-section">
+                        <h4>Essential Services</h4>
+                        <ul class="detail-list">
+                            <li><strong>Electricity (Summer):</strong> $250-400/mo (AC runs constantly)</li>
+                            <li><strong>Water/Sewer:</strong> $80-150/mo</li>
+                            <li><strong>Internet/Cable:</strong> $150-250/mo (<a href="https://www.xfinity.com/" target="_blank" class="external-link">Xfinity</a>/<a href="https://www.att.com/" target="_blank" class="external-link">AT&T</a>)</li>
+                            <li><strong>Lawn Service:</strong> $100-200/mo (HOA may require)</li>
+                            <li><strong>Pool Service:</strong> $125-175/mo (if applicable)</li>
+                            <li><strong>Pest Control:</strong> $50-75/mo (essential in FL)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Transportation Costs</h4>
+                        <ul class="detail-list">
+                            <li><strong>Two Cars (payments):</strong> $800-1,500/mo</li>
+                            <li><strong>Insurance (2 cars):</strong> $300-500/mo</li>
+                            <li><strong>Gas:</strong> $300-500/mo (everything is far)</li>
+                            <li><strong>Tolls:</strong> $100-300/mo (<a href="https://www.sunpass.com/" target="_blank" class="external-link">SunPass</a> essential)</li>
+                            <li><strong>Maintenance:</strong> $150-250/mo average</li>
+                            <li><strong>Teen Driver Insurance:</strong> +$200-400/mo</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Groceries & Dining</h4>
+                        <ul class="detail-list">
+                            <li><strong>Groceries (Family of 4):</strong> $1,200-1,800/mo</li>
+                            <li><strong>Kosher Groceries:</strong> +20-30% premium</li>
+                            <li><strong>Dining Out (2x/week):</strong> $600-1,000/mo</li>
+                            <li><strong>School Lunches:</strong> $200-300/mo (2 kids)</li>
+                            <li><strong>Israeli Products:</strong> Available at <a href="https://www.google.com/search?q=kosher+kingdom+davie" target="_blank" class="external-link">Kosher Kingdom</a> (2x NYC prices)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Kids' Activities</h4>
+                        <ul class="detail-list">
+                            <li><strong>Swimming Lessons:</strong> $150-250/mo per child</li>
+                            <li><strong>Hebrew Tutoring:</strong> $200-300/mo per child</li>
+                            <li><strong>Sports/Activities:</strong> $200-400/mo per child</li>
+                            <li><strong>Summer Camp:</strong> $3,000-5,000 per child</li>
+                            <li><strong>Bar/Bat Mitzvah Prep:</strong> $300-500/mo</li>
+                            <li><strong>Gaming/Coding Classes:</strong> $200-400/mo</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px; margin-bottom: 20px;">🏥 Healthcare & Insurance Considerations</h3>
+                <div class="info-box">
+                    <strong>Important for NYC Families:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Health Insurance:</strong> $1,200-2,000/mo (family plan) if not employer-covered</li>
+                        <li><strong>Hurricane Insurance:</strong> $3,000-5,000/year (mandatory)</li>
+                        <li><strong>Flood Insurance:</strong> $500-2,000/year (check <a href="https://msc.fema.gov/portal/home" target="_blank" class="external-link">FEMA maps</a>)</li>
+                        <li><strong>Car Insurance:</strong> 40% higher than NY due to uninsured drivers</li>
+                        <li><strong>Pediatricians:</strong> Book 3-6 months ahead for good ones</li>
+                        <li><strong>Specialists:</strong> Often 2-3 month waits</li>
+                    </ul>
+                </div>
+                
+                <h3 style="margin-top: 30px; margin-bottom: 20px;">🌴 Quality of Life Factors</h3>
+                <div class="qualitative-grid">
+                    <div class="qualitative-card">
+                        <h4>Weather Reality Check</h4>
+                        <p>May-October: 90°F+ with 80% humidity daily. Rain every afternoon 3-5pm. Hurricane season June-November requires preparation. December-April: Perfect 75-80°F weather. AC runs 9 months/year - budget accordingly. Mold is a constant battle in summer.</p>
+                    </div>
+                    
+                    <div class="qualitative-card">
+                        <h4>Israeli Product Availability</h4>
+                        <p>Davie: Best selection at <a href="https://www.google.com/search?q=kosher+kingdom+davie" target="_blank" class="external-link">Kosher Kingdom</a>, <a href="https://www.google.com/search?q=pita+plus+davie" target="_blank" class="external-link">Pita Plus</a>. Aventura: Kosher restaurants and markets abundant. Israeli products cost 2x NYC prices. Bissli, Bamba, Elite chocolate readily available. Fresh pita and hummus at multiple locations. Hebrew newspapers at most Jewish markets.</p>
+                    </div>
+                    
+                    <div class="qualitative-card">
+                        <h4>Cultural Adjustments</h4>
+                        <p>Everything closes earlier than NYC (9-10pm). No walking culture - you drive everywhere. People are friendlier but less direct than NYC. "Island time" - service is slower. No basement storage in most homes. Hurricane prep becomes routine.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px; margin-bottom: 20px;">💡 NYC to South Florida Transition Tips</h3>
+            <div class="info-box">
+                <strong>Essential Preparation for Israeli Families Moving from NYC:</strong>
+                <ul style="margin: 15px 0; padding-left: 25px;">
+                    <li><strong>Timeline Strategy:</strong> Start school applications 6-12 months early, especially private schools</li>
+                    <li><strong>Housing Hunt:</strong> Rent first year to test neighborhoods - buying sight unseen is risky</li>
+                    <li><strong>Car Shopping:</strong> Buy cars locally after arrival - shipping from NYC often not worth it</li>
+                    <li><strong>Hebrew Maintenance:</strong> Identify Hebrew tutors/programs before arrival - continuity is key</li>
+                    <li><strong>Medical Setup:</strong> Book pediatricians 3-6 months ahead - good ones have long waits</li>
+                    <li><strong>Community Integration:</strong> Join synagogues/JCC immediately for instant social networks</li>
+                    <li><strong>School Districts:</strong> Verify boundaries annually - they can change</li>
+                    <li><strong>Hurricane Prep:</strong> Budget $5-10K first year for shutters, generator, supplies</li>
+                    <li><strong>Banking:</strong> Establish local credit early - some services require FL history</li>
+                    <li><strong>Best Moving Times:</strong> April-June (before hurricane season) or November-December</li>
+                </ul>
+            </div>
+            
+            <h3 style="margin-top: 30px; margin-bottom: 20px;">🎯 Quick Decision Framework</h3>
+            <div class="success-box">
+                <strong>Choose Your Area Based on Top Priority:</strong>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #2ecc71;">
+                        <strong>🏊 Swimming Focus:</strong><br>
+                        <span style="color: #27ae60;">Cooper City</span> - Home to Cyclones, FREE public schools
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db;">
+                        <strong>🎓 Academic Excellence:</strong><br>
+                        <span style="color: #2980b9;">Weston</span> - Top public schools, FREE education
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #e74c3c;">
+                        <strong>🇮🇱 Israeli Community:</strong><br>
+                        <span style="color: #c0392b;">Davie + Posnack</span> - $46K/year, Hebrew maintained
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12;">
+                        <strong>🌍 International Urban:</strong><br>
+                        <span style="color: #d68910;">Aventura</span> - Manhattan feel, ACES FREE
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #9b59b6;">
+                        <strong>💰 Best Value:</strong><br>
+                        <span style="color: #8e44ad;">Cooper City</span> - Quality schools, lowest costs
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #1abc9c;">
+                        <strong>🏖️ Beach Lifestyle:</strong><br>
+                        <span style="color: #16a085;">North Miami Beach</span> - Public FREE or Hillel $72.8K
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="map" class="content-section">
+            <div class="map-controls">
+                <h3>Interactive Area Map - Extended Coverage</h3>
+                <p style="color: #7f8c8d; margin-bottom: 15px;">Including Aventura and North Miami Beach. Explore exact locations of schools, swimming facilities, community centers, and luxury neighborhoods.</p>
+                <div class="map-filters">
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-all" checked onchange="toggleAllLayers(this)">
+                        <span style="margin-left: 5px;">Show All</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-elementary" checked onchange="toggleMapLayer('elementary')">
+                        <span style="margin-left: 5px;">Elementary Schools (9yo)</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-middle" checked onchange="toggleMapLayer('middle')">
+                        <span style="margin-left: 5px;">Middle Schools (13yo)</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-community" checked onchange="toggleMapLayer('community')">
+                        <span style="margin-left: 5px;">Community Centers</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-swimming" checked onchange="toggleMapLayer('swimming')">
+                        <span style="margin-left: 5px;">Swimming Facilities</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px; cursor: pointer;">
+                        <input type="checkbox" id="filter-luxury" checked onchange="toggleMapLayer('luxury')">
+                        <span style="margin-left: 5px;">Luxury Communities</span>
+                    </label>
+                </div>
+            </div>
+            <div id="mapContainer"></div>
+        </div>
+        
+        <div id="comparison" class="content-section">
+            <div class="comparison-table">
+                <h2>Comprehensive Comparison Matrix - All 7 Options</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Complete data for all locations including Aventura and North Miami Beach options with accurate tuition information.</p>
+                
+                <div class="warning-box" style="margin-bottom: 20px;">
+                    <strong>🚸 Critical District Difference:</strong>
+                    <ul style="margin-top: 10px; margin-bottom: 0;">
+                        <li><strong>Broward County:</strong> Weston, Cooper City, Davie - Same school calendar, policies, and registration</li>
+                        <li><strong>Miami-Dade County:</strong> Aventura, North Miami Beach - Different calendar (may start/end on different dates), separate registration system</li>
+                        <li><strong>Impact:</strong> If you have friends in different counties, your kids may have different vacation schedules!</li>
+                    </ul>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                <table id="comparisonTable">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Elementary Options</th>
+                            <th>Middle Options</th>
+                            <th>Annual Tuition</th>
+                            <th>Academic Data</th>
+                            <th>Community Demographics</th>
+                            <th>Swimming</th>
+                            <th>Safety Stats</th>
+                            <th>Housing (Buy/Rent)</th>
+                            <th>Total Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong><a href="https://www.westonfl.org/" target="_blank" class="external-link">Weston</a> Public</strong><br><span class="badge badge-secular">100% Secular</span></td>
+                            <td>
+                                <strong><a href="https://www.google.com/search?q=everglades+elementary+weston" target="_blank" class="external-link">Everglades Elementary</a></strong><br>10/10, Math: 89%<br>
+                                <strong><a href="https://www.google.com/search?q=gator+run+elementary+weston" target="_blank" class="external-link">Gator Run Elementary</a></strong><br>10/10, Math: 87%
+                            </td>
+                            <td>
+                                <strong><a href="https://www.google.com/search?q=falcon+cove+middle+weston" target="_blank" class="external-link">Falcon Cove Middle</a></strong><br>#112 FL, 98% Algebra<br>
+                                <strong><a href="https://www.google.com/search?q=tequesta+trace+middle+weston" target="_blank" class="external-link">Tequesta Trace</a></strong><br>9/10, Cambridge
+                            </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public School</td>
+                            <td>Top 5% in Florida<br>State champions<br>Cambridge programs</td>
+                            <td>18,000 Jewish residents<br>Latin-Jewish mix<br>15% Israeli families</td>
+                            <td><a href="https://www.ymcabroward.org/locations/weston" target="_blank" class="external-link">YMCA</a> Olympic pool<br>Cyclones accessible<br>Year-round programs</td>
+                            <td><span class="badge badge-safety">Safest: 5.5/1000</span><br>Lowest in Broward</td>
+                            <td>Buy: $600K-$2M+<br>Rent: $3,500-$6,500</td>
+                            <td><strong id="weston-score">85%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong><a href="https://www.coopercityfl.org/" target="_blank" class="external-link">Cooper City</a> Public</strong><br><span class="badge badge-secular">100% Secular</span></td>
+                            <td>
+                                <strong><a href="https://www.google.com/search?q=embassy+creek+elementary+cooper+city" target="_blank" class="external-link">Embassy Creek</a></strong><br>9/10, Math: 83%<br>
+                                <strong><a href="https://www.google.com/search?q=cooper+city+elementary" target="_blank" class="external-link">Cooper City Elem</a></strong><br>8/10, STEAM focus
+                            </td>
+                            <td>
+                                <strong><a href="https://www.google.com/search?q=pioneer+middle+school+cooper+city" target="_blank" class="external-link">Pioneer Middle</a></strong><br>#140 FL<br>Cambridge program
+                            </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public School</td>
+                            <td>A-rated schools<br>Above state avg<br>Strong gifted prog</td>
+                            <td>Growing Israeli presence<br>2,664 Jewish HH<br>Family-focused</td>
+                            <td><span class="badge badge-safety"><a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> Home</span><br>USA Swimming<br>Top program</td>
+                            <td>Very safe: 10/1000<br>88% safer than US</td>
+                            <td>Buy: $450K-$1.2M<br>Rent: $2,800-$5,000</td>
+                            <td><strong id="cooper-score">78%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong><a href="https://www.davie-fl.gov/" target="_blank" class="external-link">Davie</a> Public</strong><br><span class="badge badge-secular">100% Secular</span></td>
+                            <td>
+                                <strong><a href="https://www.google.com/search?q=fox+trail+elementary+davie" target="_blank" class="external-link">Fox Trail</a></strong><br>9/10, Math: 67%<br>
+                                <strong><a href="https://www.google.com/search?q=silver+ridge+elementary+davie" target="_blank" class="external-link">Silver Ridge</a></strong><br>8/10, Leader in Me
+                            </td>
+                            <td>
+                                <strong><a href="https://www.google.com/search?q=indian+ridge+middle+davie" target="_blank" class="external-link">Indian Ridge</a></strong><br>7/10, HS credits<br>
+                                <strong><a href="https://www.google.com/search?q=nova+middle+school+davie" target="_blank" class="external-link">Nova Middle</a></strong><br>6/10, Diverse
+                            </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public School</td>
+                            <td>Mixed ratings<br>Near universities<br>Some strong programs</td>
+                            <td><span class="badge badge-safety">Israeli Hub</span><br>4,032 Jewish HH<br>Hebrew everywhere</td>
+                            <td><a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a> pool on-site<br>Pine Island Aquatic<br>Multiple options</td>
+                            <td>Moderate: 20/1000<br>University area</td>
+                            <td>Buy: $400K-$1.5M<br>Rent: $2,500-$4,500</td>
+                            <td><strong id="davie-score">72%</strong></td>
+                        </tr>
+                        <tr style="background-color: #e3f2fd;">
+                            <td><strong><a href="https://www.cityofaventura.com/" target="_blank" class="external-link">Aventura</a></strong><br><span class="badge badge-international">International Hub</span><br><span class="badge badge-secular">K-8 Charter</span></td>
+                            <td colspan="2">
+                                <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>✅ SAME SCHOOL - <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">Aventura City of Excellence (ACES)</a></strong>
+                                </div>
+                                <strong>Both Children:</strong> ACES is a K-8 charter school<br>
+                                <strong>9yo:</strong> 4th grade at ACES<br>
+                                <strong>13yo:</strong> 8th grade at ACES<br>
+                                <strong>Benefits:</strong> One school, innovative curriculum, international community
+                            </td>
+                            <td><span class="badge badge-tuition">FREE</span><br>Public Charter</td>
+                            <td>A-rated charter<br>Opened 2003<br>Flexible curriculum<br>Strong academics</td>
+                            <td><span class="badge badge-international">40% International</span><br>Israeli, Brazilian, French<br>Russian, Argentine<br>Manhattan-like diversity</td>
+                            <td>Beach proximity<br>Building pools<br>Aquatic centers<br>Ocean access</td>
+                            <td>Safe: 15/1000<br>Gated buildings<br>24/7 security</td>
+                            <td>Buy: $400K-$2M+ condos<br>Rent: $3,500-$9,000<br>Luxury high-rises</td>
+                            <td><strong id="aventura-score">82%</strong></td>
+                        </tr>
+                        <tr style="background-color: #fff5e6;">
+                            <td><strong><a href="https://www.citynmb.com/" target="_blank" class="external-link">North Miami Beach</a></strong><br><span class="badge">Hillel Option</span></td>
+                            <td colspan="2">
+                                <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>✅ SAME SCHOOL Option - <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel Community School</a> (K-12)</strong>
+                                </div>
+                                <strong>Both Children at Hillel:</strong><br>
+                                <strong>9yo:</strong> Lower School<br>
+                                <strong>13yo:</strong> Middle School<br>
+                                <strong>Alternative:</strong> Strong public schools also available
+                            </td>
+                            <td>
+                                <div class="tuition-highlight">
+                                    <strong>Hillel:</strong><br>
+                                    <span class="tuition-amount">$72,800/year</span><br>
+                                    (both children)<br>
+                                    <strong>OR</strong><br>
+                                    <span class="badge badge-tuition">FREE</span> Public
+                                </div>
+                            </td>
+                            <td>#3 Jewish school Miami<br>Deep Jewish identity<br>Strong academics<br>Large resources</td>
+                            <td>Mixed Orthodox/Secular<br>Beach community<br>International presence<br>Growing Israeli pop</td>
+                            <td>Beach access<br>Community pools<br>Ocean swimming<br>Water sports</td>
+                            <td>Moderate: 18/1000<br>Beach area varies<br>Improving rapidly</td>
+                            <td>Buy: $350K-$1.5M<br>Rent: $3,000-$5,500<br>Waterfront premium</td>
+                            <td><strong id="nmb-score">76%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong><a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack School</a></strong><br><span class="badge">Secular Jewish Culture</span></td>
+                            <td colspan="2">
+                                <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>✅ SAME SCHOOL - Both Children Together (K-12)</strong>
+                                </div>
+                                Both children at David Posnack Jewish Day School<br>
+                                Integrated curriculum, Hebrew maintenance, Israeli culture focus
+                            </td>
+                            <td>
+                                <div class="tuition-highlight">
+                                    <span class="tuition-amount">$46,000/year</span><br>
+                                    (both children)
+                                </div>
+                            </td>
+                            <td>#1 Jewish school FL<br>College prep focus<br>Small classes (8:1)</td>
+                            <td><span class="badge badge-safety">Perfect for Israelis</span><br>Hebrew maintained<br>Israeli culture central</td>
+                            <td><a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a> pool included<br>Full programs<br>Swim team access</td>
+                            <td>Same as Davie: 20/1000<br>Secure campus</td>
+                            <td>Davie prices +<br>Tuition: $46K/yr<br>(both children)</td>
+                            <td><strong id="posnack-score">88%</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong><a href="https://www.ahschool.com/" target="_blank" class="external-link">American Heritage</a></strong><br><span class="badge badge-secular">Elite Private</span></td>
+                            <td colspan="2">
+                                <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                    <strong>✅ SAME SCHOOL - Both Children Together (K-12)</strong>
+                                </div>
+                                #1 Private school in FL, 88 Merit Scholars<br>
+                                Pre-professional tracks, rolling admissions
+                            </td>
+                            <td>
+                                <div class="tuition-highlight">
+                                    <span class="tuition-amount">$85,400/year</span><br>
+                                    (both children)
+                                </div>
+                            </td>
+                            <td>Top 1% nationally<br>88 Merit Scholars<br>6 career tracks</td>
+                            <td>Diverse international<br>Not Israeli-focused<br>25% international</td>
+                            <td>Limited on-campus<br>Partner facilities<br>30 min to pools</td>
+                            <td>Plantation area<br>Private security</td>
+                            <td>Varies + Tuition<br>$85.4K/yr total<br>(both children)</td>
+                            <td><strong id="heritage-score">75%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        
+        <div id="qualitative" class="content-section">
+            <h2>💭 Community Insights & Qualitative Analysis</h2>
+            <p style="color: #7f8c8d; margin-bottom: 20px;">Deep insights from Israeli families living in all areas, including real experiences and cultural considerations.</p>
+            
+            <div class="qualitative-grid">
+                <div class="qualitative-card" style="border-left-color: #ff6b6b;">
+                    <h4>🌴 Aventura: Manhattan of the South</h4>
+                    <p>Aventura is where Israeli families who miss NYC's urban energy feel most at home. You'll hear Hebrew, Portuguese, French, and Russian in the elevator. The buildings have amenities that rival Manhattan's best - pools, gyms, spas, and concierge services. <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Aventura Mall</a> is your backyard, and you can actually walk to restaurants and shops. The downside? No yard for the kids, and the "Miami lifestyle" can be materialistic. Israeli families love that kids can be more independent here - they can walk to friends in the same building. The international vibe means your kids will have friends from everywhere, not just America. Best of all - ACES charter school is FREE, so you save tuition costs while living in luxury.</p>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: #4ecdc4;">
+                    <h4>🏖️ North Miami Beach: Beach Life Balance</h4>
+                    <p>North Miami Beach offers something unique - actual beach proximity with a strong Jewish infrastructure. <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel School</a> costs $36,400 per child annually but has both religious and secular Jewish families, creating an interesting dynamic. Some Israeli families find it perfect because kids get Jewish education without Orthodox intensity. Others worry about the religious influence. The area is gentrifying rapidly - what was sketchy 5 years ago is now trendy. You're 15 minutes from the beach, 20 from Aventura's shopping, and housing is still (relatively) affordable. The orthodox community is visible but not dominant. Many Israelis here are in real estate or tech. Public schools are free if you want to save on tuition.</p>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: #f39c12;">
+                    <h4>💰 The Tuition Factor Reality Check</h4>
+                    <p>Here's the truth about private school tuition that NYC families often underestimate: <a href="https://www.ahschool.com/" target="_blank" class="external-link">American Heritage</a> at $85,400/year for two kids is like paying a second mortgage. <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> at $72,800/year is significant. Even <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> at $46,000/year adds up. Many families start with dreams of private school but realize the public schools in Weston and Cooper City are excellent and FREE. Aventura's ACES charter is also free with an international vibe. Some families compromise - one year private to ease transition, then switch to public. Others use tuition savings for enrichment: Hebrew tutors, coding camps, swim team. Remember: Florida has no state income tax, but that private school tuition can eat up the savings quickly.</p>
+                </div>
+                
+                <div class="qualitative-card">
+                    <h4>🚨 Why NOT Parkland (Important)</h4>
+                    <p>While Parkland has highly-rated schools, recent reports of antisemitic incidents are concerning. Jewish students faced exclusion attempts from school fairs, and vandalism was dismissed as "just vandalism" rather than being addressed as antisemitism. Despite a significant Jewish population, several Israeli families have reported feeling unwelcome. The academic excellence doesn't compensate for potential social challenges your children might face. Many families who started in Parkland have relocated to Weston or Cooper City.</p>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: #e74c3c;">
+                    <h4>🏫 The District Split Challenge</h4>
+                    <p>Here's what nobody tells you: <a href="https://www.browardschools.com/" target="_blank" class="external-link">Broward County</a> (Weston, Cooper City, Davie) and <a href="https://www.dadeschools.net/" target="_blank" class="external-link">Miami-Dade County</a> (Aventura, North Miami Beach) have different school calendars. Your Aventura friends' kids might have spring break a week different from your Weston friends. Teacher planning days don't align. Even start/end dates can be different. Some families find this isolating - you can't coordinate vacations with friends across county lines. Others use it strategically, booking cheaper flights during off-peak times. If you're choosing between counties, consider where most of your social circle will likely form.</p>
+                </div>
+                
+                <div class="qualitative-card">
+                    <h4>💼 Work-Life Integration</h4>
+                    <p>NYC Israeli parents are shocked by South Florida's work culture. People actually leave the office by 5:30 PM. Youth sports practice starts at 4 PM, assuming a parent is available. There's no "stay late" culture - family time is respected. The challenge? Everything requires driving. You'll spend 2-3 hours daily in the car. Successful families often have one parent with flexible hours to manage pickup/dropoff. Remote work is a game-changer here. Aventura is the only area where teens can have some independence without a car.</p>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: #9b59b6;">
+                    <h4>🎮 Gaming Culture & Tech Scene</h4>
+                    <p>Your game-loving 13-year-old will find peers everywhere, but organized programs vary. Weston kids often have high-end gaming setups and join online academies. Cooper City has grassroots gaming clubs. Davie, near <a href="https://www.nova.edu/" target="_blank" class="external-link">NSU</a>, has the most structured programs. Aventura kids game in building common areas with international friends. The surprise? Many Israeli parents here embrace gaming as a career path, unlike in Israel. Tech parents from Israel are concentrated in Aventura and Weston, creating informal mentorship networks. Several Israeli-founded gaming startups recruit teen testers from local schools.</p>
+                </div>
+                
+                <div class="qualitative-card">
+                    <h4>🏊 Swimming Culture Differences</h4>
+                    <p>Swimming in South Florida isn't just an activity - it's a lifestyle and social network. <a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cooper City Cyclones</a> is where Israeli kids often find their tribe. Unlike NYC's indoor pools, here it's year-round outdoor swimming. Swim meets are social events where Israeli families gather. The commitment level surprises NYC families - practice is 5-6 days/week for competitive swimmers. The upside? Kids develop incredible discipline and friendships. Many Israeli parents become timers or volunteers, creating community. Warning: "Swimming pool hair" (green tinge from chlorine) is real - budget for special shampoo!</p>
+                </div>
+                
+                <div class="qualitative-card" style="border-left-color: #e74c3c;">
+                    <h4>🏠 Housing Reality Check</h4>
+                    <p>Coming from NYC, space seems unlimited, but there are surprises. No basements mean creative storage solutions. Hurricanes mean impact windows (expensive but necessary). HOAs in Weston can be strict - wrong mailbox color gets you fined. Davie offers freedom but less polish. Aventura condos have NYC-style boards that can be difficult. Cooper City hits the sweet spot for many. Israeli families often rent for a year before buying to understand neighborhoods. Pro tip: Visit during summer to experience true heat/humidity before committing. Many homes need hurricane upgrades not reflected in listing prices.</p>
+                </div>
+                
+                <div class="qualitative-card">
+                    <h4>🌺 The "Florida Israeli" Identity</h4>
+                    <p>Your kids will develop a unique identity - not quite Israeli, not quite American, but "Florida Israeli." They'll speak English with friends, Hebrew at home, and Spanish with half their classmates. They'll celebrate Jewish holidays and Halloween with equal enthusiasm. Beach culture replaces NYC culture. Bar/Bat Mitzvahs here are different - often more elaborate than in Israel, less traditional than NY. Kids adapt faster than parents. The challenge is maintaining Hebrew - without daily use, it fades. Successful families create Hebrew-only zones: dinner time, Sunday mornings, or car rides. Israeli summer camps help maintain connection.</p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px; margin-bottom: 20px;">🔍 Insider Tips by Area</h3>
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h4>🌟 Weston Insider Knowledge</h4>
+                    <ul class="detail-list">
+                        <li><strong>Best Communities:</strong> <a href="https://www.google.com/search?q=weston+hills+country+club" target="_blank" class="external-link">Weston Hills Country Club</a>, <a href="https://www.google.com/search?q=bonaventure+weston" target="_blank" class="external-link">Bonaventure</a>, Savanna</li>
+                        <li><strong>HOA Reality:</strong> $200-500/mo common, some restrict rentals/pets</li>
+                        <li><strong>School Enrollment:</strong> Register early (Feb-March), use YOUR address for zoning</li>
+                        <li><strong>Traffic Hack:</strong> Avoid I-75 7-9am/4-7pm, use Weston Rd to 595</li>
+                        <li><strong>Shopping:</strong> <a href="https://www.google.com/search?q=bonaventure+town+center" target="_blank" class="external-link">Bonaventure Town Center</a> for daily needs, avoid weekends</li>
+                        <li><strong>Israeli Community:</strong> Concentrated in Windmill Ranch, Indian Trace</li>
+                        <li><strong>Hidden Costs:</strong> Lawn service required by HOA ($150-200/mo)</li>
+                        <li><strong>Property Taxes:</strong> Highest in Broward - budget $12-15K/year</li>
+                        <li><strong>Best Timing:</strong> Move before school starts (Aug) to secure spots</li>
+                        <li><strong>Commute Optimization:</strong> Live east of Bonaventure for easier access</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🏊 Cooper City Insider Knowledge</h4>
+                    <ul class="detail-list">
+                        <li><strong>Best Areas for Families:</strong> Embassy Lakes, Stirling Lakes, Cooper Colony</li>
+                        <li><strong>Swimming Program Secret:</strong> <a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> waitlist opens January - register immediately</li>
+                        <li><strong>School Strategy:</strong> Embassy Creek Elementary fills fast - apply early</li>
+                        <li><strong>Community Events:</strong> Fall Festival (Oct) - major networking event</li>
+                        <li><strong>Shopping Smart:</strong> Pembroke Lakes Mall (10 min), avoid town center traffic</li>
+                        <li><strong>Israeli Families:</strong> Growing cluster near Brian Piccolo Park</li>
+                        <li><strong>Transportation:</strong> Central location = shortest drives everywhere</li>
+                        <li><strong>Property Values:</strong> Best appreciation rate in area</li>
+                        <li><strong>Seasonal Tip:</strong> Pool homes rent 20% higher in winter</li>
+                        <li><strong>Local Secret:</strong> City has lowest crime in Broward County</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🏡 Davie Insider Knowledge</h4>
+                    <ul class="detail-list">
+                        <li><strong>Best Areas Near JCC:</strong> Griffin Rd corridor, Flamingo Gardens area</li>
+                        <li><strong>Israeli Community Hub:</strong> Pine Island Rd - Hebrew spoken everywhere</li>
+                        <li><strong>School Districts:</strong> Some areas zoned to better schools - verify boundaries</li>
+                        <li><strong>Horse Properties:</strong> Southwest Davie allows horses, unique lifestyle</li>
+                        <li><strong>Traffic Patterns:</strong> University Dr congested during NSU class times</li>
+                        <li><strong>Hidden Gem:</strong> <a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a> membership includes pool, camps, youth programs</li>
+                        <li><strong>Cost Savings:</strong> No HOA fees in many areas</li>
+                        <li><strong>Israeli Services:</strong> Mechanics, contractors, tutors all Hebrew-speaking</li>
+                        <li><strong>University Benefits:</strong> NSU library, sports facilities accessible</li>
+                        <li><strong>Seasonal Consideration:</strong> Western areas flood in heavy rain - check drainage</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🎓 Posnack School Area Considerations</h4>
+                    <ul class="detail-list">
+                        <li><strong>Application Timing:</strong> Apply by February for next year - rolling admissions</li>
+                        <li><strong>Financial Aid:</strong> Available but competitive - apply early</li>
+                        <li><strong>Best Residential Areas:</strong> Within 15 min - Country Isles, Pine Island</li>
+                        <li><strong>Carpool Networks:</strong> Organized WhatsApp groups by neighborhood</li>
+                        <li><strong>Community Integration:</strong> School events are major social networking</li>
+                        <li><strong>Hebrew Maintenance:</strong> School reinforces home language naturally</li>
+                        <li><strong>Sibling Priority:</strong> Younger siblings get preference for admission</li>
+                        <li><strong>Transportation:</strong> No bus service - carpool essential</li>
+                        <li><strong>Tuition Payment:</strong> 10-month plan available, 3% discount for annual payment</li>
+                        <li><strong>Israeli Culture:</strong> Yom Ha'atzmaut, Israeli holidays celebrated school-wide</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🏆 American Heritage School Tips</h4>
+                    <ul class="detail-list">
+                        <li><strong>Campus Choice:</strong> Plantation (K-12) vs Delray (6-12) - Plantation preferred for families</li>
+                        <li><strong>Admission Strategy:</strong> Apply by December for best chances, test scores crucial</li>
+                        <li><strong>Best Nearby Communities:</strong> Weston, Davie, Southwest Ranches</li>
+                        <li><strong>Academic Preparation:</strong> Summer prep programs recommended for admission</li>
+                        <li><strong>Extracurricular Edge:</strong> 30+ clubs, robotics team, debate team nationally ranked</li>
+                        <li><strong>Transportation:</strong> No bus service - 30-45 min commute from most areas</li>
+                        <li><strong>Merit Scholars:</strong> 88 in 2024 - highest in Florida</li>
+                        <li><strong>Tuition Reality:</strong> Additional fees for activities, technology, trips</li>
+                        <li><strong>International Program:</strong> 25% international students - global perspective</li>
+                        <li><strong>College Counseling:</strong> Starts 9th grade - Ivy League placement strong</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>Aventura Insider Knowledge</h4>
+                    <ul class="detail-list">
+                        <li><strong>Best Buildings for Israelis:</strong> <a href="https://www.turnberryoceanclub.com/" target="_blank" class="external-link">Turnberry</a>, <a href="https://www.portovitatower.com/" target="_blank" class="external-link">Porto Vita</a>, Williams Island</li>
+                        <li><strong>Shopping:</strong> <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Aventura Mall</a> has Israeli-owned stores</li>
+                        <li><strong>Hidden Gem:</strong> Waterways dog park - Israeli family meetup spot</li>
+                        <li><strong>Food:</strong> Fuego (Argentine-Israeli owner), <a href="https://www.google.com/search?q=mozart+bakery+aventura" target="_blank" class="external-link">Mozart Bakery</a></li>
+                        <li><strong>Avoid:</strong> Buildings without hurricane shutters</li>
+                        <li><strong>School Alternative:</strong> Some use <a href="https://www.cushmanschool.org/" target="_blank" class="external-link">Cushman School</a> (private)</li>
+                        <li><strong>Budget Win:</strong> ACES charter school is FREE!</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>North Miami Beach Secrets</h4>
+                    <ul class="detail-list">
+                        <li><strong>Best Areas:</strong> Eastern Shores, Skylake neighborhoods</li>
+                        <li><strong>Beach Access:</strong> <a href="https://www.google.com/search?q=haulover+park+miami" target="_blank" class="external-link">Haulover Park</a> - family section north</li>
+                        <li><strong>Shopping:</strong> <a href="https://www.balharbourshops.com/" target="_blank" class="external-link">Bal Harbour Shops</a> (10 min), Aventura Mall (15 min)</li>
+                        <li><strong>Community:</strong> Lehrman School also popular with Israelis</li>
+                        <li><strong>Warning:</strong> Check <a href="https://msc.fema.gov/portal/home" target="_blank" class="external-link">flood zones</a> carefully</li>
+                        <li><strong>Rising Area:</strong> Keystone Islands becoming Israeli enclave</li>
+                        <li><strong>Tuition Reality:</strong> Hillel is $72,800/year for 2 kids</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="details" class="content-section">
+            <h2>📋 Complete Data Analysis - All Locations</h2>
+            <p style="color: #7f8c8d; margin-bottom: 20px;">Comprehensive information for all areas including detailed analysis and decision factors.</p>
+            
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h4>🌴 Aventura - The International Urban Choice</h4>
+                    <ul class="detail-list">
+                        <li><strong>School Option:</strong> <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">Aventura City of Excellence School (ACES)</a> - K-8 charter serving both children</li>
+                        <li><strong>Academic Performance:</strong> A-rated school, innovative curriculum, opened 2003</li>
+                        <li><strong>Tuition:</strong> <span class="badge badge-tuition">FREE</span> - Public charter school</li>
+                        <li><strong>Class Sizes:</strong> Average 20-22 students, charter flexibility</li>
+                        <li><strong>Demographics:</strong> 40% international families - Israeli, Brazilian, French, Russian, Argentine</li>
+                        <li><strong>Housing:</strong> 95% condos/apartments, luxury high-rises dominate</li>
+                        <li><strong>Price Range:</strong> Buy: $400K-$2M+ | Rent: $3,500-$9,000/mo</li>
+                        <li><strong>Lifestyle:</strong> Walkable, urban, similar to Manhattan living</li>
+                        <li><strong>Swimming:</strong> Building pools, beach 20 min, aquatic centers</li>
+                        <li><strong>Shopping:</strong> <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Aventura Mall</a> - 3rd largest in US</li>
+                        <li><strong>Commute:</strong> To Downtown Miami: 25-40 min | To FLL Airport: 20 min</li>
+                        <li><strong>Israeli Community:</strong> Largest concentration in high-rises, Hebrew common</li>
+                        <li><strong>High School Path:</strong> Need to change schools - <a href="https://www.google.com/search?q=dr+michael+krop+senior+high" target="_blank" class="external-link">Dr. Michael Krop Senior High</a></li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🏖️ North Miami Beach - The Beach Community Choice</h4>
+                    <ul class="detail-list">
+                        <li><strong>Private Option:</strong> <a href="https://www.ehillel.org/" target="_blank" class="external-link">Scheck Hillel Community School</a> - #3 Jewish school in Miami</li>
+                        <li><strong>Hillel Details:</strong> K-12, 1,300+ students, 7:1 student-teacher ratio</li>
+                        <li><strong>Tuition (Hillel):</strong> <span class="tuition-amount">$36,400/year per child ($72,800 for both)</span></li>
+                        <li><strong>Public Options:</strong> <a href="https://www.google.com/search?q=ojus+elementary+school" target="_blank" class="external-link">Ojus Elementary</a> (7/10), <a href="https://www.google.com/search?q=highland+oaks+middle+school" target="_blank" class="external-link">Highland Oaks Middle</a> (6/10) - <span class="badge badge-tuition">FREE</span></li>
+                        <li><strong>Jewish Community:</strong> Mix of Orthodox and secular, growing Israeli population</li>
+                        <li><strong>Beach Access:</strong> 10-15 minutes to beach, water sports culture</li>
+                        <li><strong>Housing Mix:</strong> Single family homes, condos, some waterfront</li>
+                        <li><strong>Price Range:</strong> Buy: $350K-$1.5M | Rent: $3,000-$5,500/mo</li>
+                        <li><strong>Safety:</strong> 18 incidents per 1,000 - moderate, improving rapidly</li>
+                        <li><strong>Gentrification:</strong> Rapidly changing, property values rising</li>
+                        <li><strong>Shopping:</strong> Close to <a href="https://www.balharbourshops.com/" target="_blank" class="external-link">Bal Harbour Shops</a>, Aventura Mall</li>
+                        <li><strong>Character:</strong> More diverse economically than Aventura</li>
+                        <li><strong>Warning:</strong> Check flood zones and hurricane history</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>⚠️ Areas to Avoid & Important Warnings</h4>
+                    <ul class="detail-list">
+                        <li><strong>Parkland:</strong> Despite top schools, reports of antisemitic incidents</li>
+                        <li><strong>Hallandale Beach:</strong> High crime rates, poor schools</li>
+                        <li><strong>Parts of Hollywood:</strong> Very mixed quality, research specific areas</li>
+                        <li><strong>Pembroke Park:</strong> Industrial area, not family-friendly</li>
+                        <li><strong>West of US-27:</strong> Too far from Jewish life, new development risks</li>
+                        <li><strong>Flood Zones:</strong> Check <a href="https://msc.fema.gov/portal/home" target="_blank" class="external-link">FEMA maps</a> - insurance can be $5K+/year</li>
+                        <li><strong>HOA Restrictions:</strong> Some ban religious displays, check rules</li>
+                        <li><strong>School Boundaries:</strong> Can change yearly, verify before buying</li>
+                        <li><strong>Traffic Patterns:</strong> Some areas have 1-hour school commutes</li>
+                        <li><strong>Summer Camps:</strong> Book by February or lose out</li>
+                        <li><strong>Private School Deposits:</strong> Often non-refundable, $2,500-5,000</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>📊 Decision Matrix Factors</h4>
+                    <ul class="detail-list">
+                        <li><strong>Both Kids Same School:</strong> <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> ($46K), <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a> ($85.4K), <a href="https://www.aventuracharter.org/" target="_blank" class="external-link">ACES</a> (FREE), <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> ($72.8K)</li>
+                        <li><strong>Free Education Options:</strong> All public schools, ACES charter</li>
+                        <li><strong>Highest Israeli Concentration:</strong> Aventura, Davie, North Miami Beach</li>
+                        <li><strong>Best Swimming Programs:</strong> Cooper City (<a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a>), Weston (<a href="https://www.ymcabroward.org/locations/weston" target="_blank" class="external-link">YMCA</a>)</li>
+                        <li><strong>Game Design Access:</strong> Davie (NSU programs), Lauderhill magnet</li>
+                        <li><strong>Most Affordable:</strong> Davie public schools, parts of Cooper City</li>
+                        <li><strong>Best Weather/Beach:</strong> Aventura, North Miami Beach</li>
+                        <li><strong>Safest:</strong> Weston, Cooper City, Aventura buildings</li>
+                        <li><strong>Most NYC-like:</strong> Aventura (urban, walkable, diverse)</li>
+                        <li><strong>Best Value:</strong> Cooper City (quality vs. price)</li>
+                        <li><strong>Easiest Integration:</strong> Davie (established Israeli community)</li>
+                        <li><strong>Academic Excellence:</strong> Weston public, Heritage private</li>
+                        <li><strong>Jewish + Secular:</strong> Posnack, Hillel (with secular families)</li>
+                    </ul>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>💰 Full Cost Analysis (Annual)</h4>
+                    <ul class="detail-list">
+                        <li><strong>Weston Public:</strong> $0 tuition + $144-216K living = $144-216K total</li>
+                        <li><strong>Cooper City Public:</strong> $0 tuition + $120-180K living = $120-180K total</li>
+                        <li><strong>Davie Public:</strong> $0 tuition + $114-168K living = $114-168K total</li>
+                        <li><strong>Aventura ACES:</strong> $0 tuition + $150-228K living = $150-228K total</li>
+                        <li><strong>NMB Public:</strong> $0 tuition + $132-192K living = $132-192K total</li>
+                        <li><strong>NMB + Hillel:</strong> $72.8K tuition + $132-192K living = $205-265K total</li>
+                        <li><strong>Davie + Posnack:</strong> $46K tuition + $114-168K living = $160-214K total</li>
+                        <li><strong>Heritage:</strong> $85.4K tuition + $120-200K living = $205-285K total</li>
+                    </ul>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                        * Living costs include housing + all monthly expenses<br>
+                        * Private school tuition for 2 children included where applicable<br>
+                        * Financial aid may be available at private schools
+                    </p>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🚗 Practical Daily Life Considerations</h4>
+                    <ul class="detail-list">
+                        <li><strong>Two Cars Essential:</strong> Budget $800-1500/mo for payments + insurance</li>
+                        <li><strong>Hurricane Prep:</strong> Generator ($5-10K), shutters ($15-30K), supplies ($500/yr)</li>
+                        <li><strong>A/C Dependency:</strong> Runs 9 months, $300-500/mo summer electric bills</li>
+                        <li><strong>No Public Transit:</strong> Everything requires driving, teens need rides until 16</li>
+                        <li><strong>Israeli Products:</strong> Available at <a href="https://www.google.com/search?q=kosher+kingdom+davie" target="_blank" class="external-link">Kosher Kingdom</a> but expensive</li>
+                        <li><strong>Beach Reality:</strong> Beautiful but requires sun protection year-round</li>
+                        <li><strong>Social Life:</strong> Revolves around kids' activities and religious communities</li>
+                        <li><strong>Time Zone:</strong> Israel is 7-8 hours ahead - affects family calls</li>
+                        <li><strong>Jewish Holidays:</strong> Public schools open - need backup childcare</li>
+                        <li><strong>Summer:</strong> Too hot for outdoor activities 11am-4pm May-October</li>
+                        <li><strong>Dress Code:</strong> Casual everywhere - shorts and sandals acceptable</li>
+                        <li><strong>Pest Control:</strong> Mandatory - ants, roaches, and lizards are common</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="success-box">
+                <strong>Final Recommendation Framework:</strong> Based on your priorities:
+                <ul style="margin-top: 10px;">
+                    <li><strong>If budget is crucial:</strong> Public schools in Weston/Cooper City or ACES in Aventura</li>
+                    <li><strong>If Israeli community is #1:</strong> Davie + <a href="https://www.posnackschool.org/" target="_blank" class="external-link">Posnack</a> ($46K) or Aventura (FREE)</li>
+                    <li><strong>If academic excellence matters most:</strong> Weston public (FREE) or <a href="https://www.ahschool.com/" target="_blank" class="external-link">Heritage</a> ($85.4K)</li>
+                    <li><strong>If swimming is crucial:</strong> Cooper City (<a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cyclones</a> base) - FREE schools</li>
+                    <li><strong>If you want urban/international:</strong> Aventura (Manhattan feel) - FREE school</li>
+                    <li><strong>If you want best value:</strong> Cooper City public schools - FREE</li>
+                    <li><strong>If you want beach lifestyle:</strong> North Miami Beach (public FREE or <a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel</a> $72.8K)</li>
+                    <li><strong>If you want one school for both kids:</strong> Compare costs: ACES (FREE) vs. Posnack ($46K) vs. Hillel ($72.8K) vs. Heritage ($85.4K)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- External JavaScript -->
+        <script src="script.js"></script>
+    </body>
+    </html>
+        
+        <div id="transportation" class="content-section">
+            <div class="transportation-section">
+                <h2>🚗 Getting Around South Florida - Transportation Reality Check</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Coming from NYC's subway system? Here's what you need to know about transportation in each area.</p>
+                
+                <div class="warning-box" style="margin-bottom: 30px;">
+                    <h3>⚠️ Critical NYC → South Florida Transportation Differences:</h3>
+                    <ul style="margin: 10px 0; padding-left: 25px;">
+                        <li><strong>NO PUBLIC TRANSPORTATION:</strong> No subway, limited buses, no walking to stores</li>
+                        <li><strong>TWO CARS ESSENTIAL:</strong> Both parents need cars for school runs, activities, work</li>
+                        <li><strong>TEEN TRANSPORTATION:</strong> Kids need rides everywhere until they're 16</li>
+                        <li><strong>DISTANCE REALITY:</strong> Everything is 10-30 minutes by car</li>
+                        <li><strong>TRAFFIC PATTERNS:</strong> Rush hour is real - plan accordingly</li>
+                    </ul>
+                </div>
+                
+                <div class="transport-grid">
+                    <div class="transport-card">
+                        <h4>🚙 Weston Transportation</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>Car Dependency:</strong> 100% - No walkable areas</li>
+                            <li><strong>To Downtown Miami:</strong> 45-65 min (rush hour)</li>
+                            <li><strong>To Fort Lauderdale:</strong> 30-40 min</li>
+                            <li><strong>To Beach:</strong> 35-45 min</li>
+                            <li><strong>Major Roads:</strong> I-75, I-595, US-27</li>
+                            <li><strong>Traffic Hot Spots:</strong> I-75/595 interchange</li>
+                            <li><strong>School Traffic:</strong> Add 20 min during drop-off</li>
+                            <li><strong>Toll Roads:</strong> Sawgrass Expressway</li>
+                            <li><strong>Uber to Airport:</strong> $45-65 to FLL</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #666;">Everything requires driving. Plan for multiple daily trips. <a href="https://511southflorida.com/" target="_blank" class="external-link">Check traffic</a></p>
+                    </div>
+                    
+                    <div class="transport-card">
+                        <h4>🚙 Cooper City Transportation</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>Car Dependency:</strong> 100% - Suburban layout</li>
+                            <li><strong>Central Location:</strong> Best access to everywhere</li>
+                            <li><strong>To Downtown Miami:</strong> 35-50 min</li>
+                            <li><strong>To Fort Lauderdale:</strong> 20-30 min</li>
+                            <li><strong>To Beach:</strong> 25-35 min</li>
+                            <li><strong>Major Roads:</strong> Sheridan St, Pine Island Rd</li>
+                            <li><strong>Less Traffic:</strong> Easier than Weston</li>
+                            <li><strong>School Access:</strong> Schools closer together</li>
+                            <li><strong>Local Shopping:</strong> 5-10 min to stores</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #666;">Most central location reduces overall driving time.</p>
+                    </div>
+                    
+                    <div class="transport-card">
+                        <h4>🚙 Davie Transportation</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>Car Dependency:</strong> 95% - Some walkable areas near NSU</li>
+                            <li><strong>University Area:</strong> Students create traffic</li>
+                            <li><strong>To Downtown Miami:</strong> 30-45 min</li>
+                            <li><strong>To Fort Lauderdale:</strong> 20-25 min</li>
+                            <li><strong>To Beach:</strong> 25-30 min</li>
+                            <li><strong>Major Roads:</strong> I-595, US-441, University Dr</li>
+                            <li><strong>JCC Access:</strong> Many can walk/bike</li>
+                            <li><strong>Horse Trails:</strong> Some areas allow horses</li>
+                            <li><strong>College Traffic:</strong> Avoid NSU at class times</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #666;">Most diverse transportation options, some areas walkable to <a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a>.</p>
+                    </div>
+                    
+                    <div class="transport-card">
+                        <h4>🚶 Aventura Transportation (Most NYC-Like)</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>Car Dependency:</strong> 70% - Most walkable option</li>
+                            <li><strong>Walkable to:</strong> <a href="https://www.aventuramall.com/" target="_blank" class="external-link">Mall</a>, restaurants, some schools</li>
+                            <li><strong>To Downtown Miami:</strong> 25-40 min</li>
+                            <li><strong>To South Beach:</strong> 20-30 min</li>
+                            <li><strong>To Fort Lauderdale:</strong> 20-30 min</li>
+                            <li><strong>Major Roads:</strong> I-95, Biscayne Blvd, US-1</li>
+                            <li><strong>Valet Parking:</strong> Common at buildings</li>
+                            <li><strong>Aventura Express:</strong> Free local shuttle</li>
+                            <li><strong>Bike-Friendly:</strong> Some dedicated paths</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #666;">Only area where teens can have some independence. Buildings offer shuttle services.</p>
+                    </div>
+                    
+                    <div class="transport-card">
+                        <h4>🚙 North Miami Beach Transportation</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><strong>Car Dependency:</strong> 90% - Some walkable beach areas</li>
+                            <li><strong>To Downtown Miami:</strong> 20-35 min</li>
+                            <li><strong>To South Beach:</strong> 15-25 min</li>
+                            <li><strong>To Aventura:</strong> 10-15 min</li>
+                            <li><strong>Major Roads:</strong> I-95, Biscayne Blvd, A1A</li>
+                            <li><strong>Beach Access:</strong> Multiple points</li>
+                            <li><strong>Traffic:</strong> Beach traffic on weekends</li>
+                            <li><strong>Parking:</strong> Can be challenging near beach</li>
+                            <li><strong>Bus Routes:</strong> More options than suburbs</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #666;">Closer to beaches and Miami attractions. Weekend beach traffic is significant.</p>
+                    </div>
+                    
+                    <div class="transport-card">
+                        <h4>💡 Transportation Cost Reality</h4>
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
+                            <strong>Monthly Transportation Budget:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><strong>Car Payments:</strong> $800-1,500 (2 cars)</li>
+                                <li><strong>Insurance:</strong> $300-500 (FL rates high)</li>
+                                <li><strong>Gas:</strong> $300-500</li>
+                                <li><strong>Tolls:</strong> $100-300 (<a href="https://www.sunpass.com/" target="_blank" class="external-link">SunPass</a> required)</li>
+                                <li><strong>Maintenance:</strong> $150-250</li>
+                                <li><strong>Teen Driver:</strong> +$200-400/mo insurance</li>
+                                <li><strong>Total:</strong> $1,850-3,450/month</li>
+                            </ul>
+                            <p style="margin-top: 10px;"><strong>Pro Tip:</strong> Factor in 2-3 hours daily driving for activities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="kids-life" class="content-section">
+            <div class="kids-section">
+                <h2>👦 Best Places for Kids to Thrive - Friends, Activities & Social Life</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">Where will your 9-year-old and 13-year-old find friends, activities, and build their social circles?</p>
+                
+                <div class="kids-activities-grid">
+                    <div class="activity-card">
+                        <h4>🎾 Weston - Organized Activities Paradise</h4>
+                        <p><strong>For Your 9-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><a href="https://www.ymcabroward.org/locations/weston" target="_blank" class="external-link">Weston YMCA</a>: Swimming, sports leagues, camps</li>
+                            <li>Little League at <a href="https://www.westonbaseballsoftball.com/" target="_blank" class="external-link">Regional Park</a></li>
+                            <li>Soccer at <a href="https://www.westonsoccer.net/" target="_blank" class="external-link">Weston FC</a> (huge Israeli participation)</li>
+                            <li>Art classes at Young At Art Museum</li>
+                        </ul>
+                        <p><strong>For Your 13-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Gaming lounges at <a href="https://www.google.com/search?q=weston+gaming+lounge" target="_blank" class="external-link">Bonaventure Town Center</a></li>
+                            <li>Travel sports teams (very competitive)</li>
+                            <li>Robotics clubs at schools</li>
+                            <li>Mall hangouts (limited, need rides)</li>
+                        </ul>
+                        <p style="color: #666; margin-top: 10px;">Very structured, organized activities. Kids make friends through programs. Israeli families cluster in certain sports.</p>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h4>🏊 Cooper City - Swimming & Sports Central</h4>
+                        <p><strong>For Your 9-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><a href="https://www.teamunify.com/team/ccsc/page/home" target="_blank" class="external-link">Cooper City Cyclones</a> swim team (Israeli hub)</li>
+                            <li>Brian Piccolo Park sports leagues</li>
+                            <li>Karate at local dojos</li>
+                            <li>Library programs and clubs</li>
+                        </ul>
+                        <p><strong>For Your 13-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Competitive swimming (year-round commitment)</li>
+                            <li>Basketball at the Sports Complex</li>
+                            <li>Skate park scene</li>
+                            <li>Local gaming cafes</li>
+                        </ul>
+                        <p style="color: #666; margin-top: 10px;">Swimming culture dominates. Cyclones creates instant friend group. Very family-oriented community.</p>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h4>🏡 Davie - Israeli Community Hub</h4>
+                        <p><strong>For Your 9-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><a href="https://www.dpjcc.org/" target="_blank" class="external-link">JCC</a> after-school programs</li>
+                            <li>Maccabi Tzair youth movement</li>
+                            <li>Hebrew-speaking playgroups</li>
+                            <li>Horse riding lessons (unique to Davie)</li>
+                        </ul>
+                        <p><strong>For Your 13-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><a href="https://library.nova.edu/" target="_blank" class="external-link">NSU Library</a> teen tech programs</li>
+                            <li>JCC teen lounge and programs</li>
+                            <li>Israeli scouts equivalent groups</li>
+                            <li>Gaming workshops at NSU</li>
+                        </ul>
+                        <p style="color: #666; margin-top: 10px;">Most Israeli-centered activities. Kids maintain Hebrew naturally. Less polished but more authentic community feel.</p>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h4>🌴 Aventura - International Urban Kids</h4>
+                        <p><strong>For Your 9-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Building playrooms (instant friends)</li>
+                            <li><a href="https://www.aventuramall.com/" target="_blank" class="external-link">Mall</a> activities and camps</li>
+                            <li>Beach programs nearby</li>
+                            <li>International playdates (diverse friends)</li>
+                        </ul>
+                        <p><strong>For Your 13-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Can walk to mall (independence!)</li>
+                            <li>Building teen rooms</li>
+                            <li>Beach sports and activities</li>
+                            <li>International friend groups</li>
+                        </ul>
+                        <p style="color: #666; margin-top: 10px;">Most independence for teens. Diverse international friends. Less organized sports, more casual socializing.</p>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h4>🏖️ North Miami Beach - Beach Life Kids</h4>
+                        <p><strong>For Your 9-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Beach sports and swimming</li>
+                            <li><a href="https://www.ehillel.org/" target="_blank" class="external-link">Hillel School</a> activities</li>
+                            <li>Water sports introduction</li>
+                            <li>Local park programs</li>
+                        </ul>
+                        <p><strong>For Your 13-Year-Old:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Surfing and water sports</li>
+                            <li>Beach volleyball leagues</li>
+                            <li>Skateboarding scene</li>
+                            <li>Mixed secular/religious youth groups</li>
+                        </ul>
+                        <p style="color: #666; margin-top: 10px;">Beach culture dominates. More laid-back than inland communities. Growing young family population.</p>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h4>🎮 Gaming & Tech Opportunities</h4>
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px;">
+                            <strong>For Your Game-Loving 13-Year-Old:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><strong>Davie:</strong> <a href="https://library.nova.edu/" target="_blank" class="external-link">NSU workshops</a> (free, monthly)</li>
+                                <li><strong>Weston:</strong> Private academies, online programs</li>
+                                <li><strong>Aventura:</strong> Building gaming rooms, diverse gamers</li>
+                                <li><strong>All Areas:</strong> <a href="https://www.codeninja.com/" target="_blank" class="external-link">Code Ninjas</a>, <a href="https://www.thecoderschool.com/" target="_blank" class="external-link">Coder School</a></li>
+                                <li><strong>Lauderhill:</strong> 6-12 STEM school (30-40 min drive)</li>
+                            </ul>
+                            <p><strong>Israeli Gaming Community:</strong> WhatsApp groups connect Israeli gamer kids across all areas</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-box" style="margin-top: 30px;">
+                    <h3>📱 How Israeli Kids Stay Connected:</h3>
+                    <ul style="margin: 10px 0; padding-left: 25px;">
+                        <li><strong>WhatsApp Groups:</strong> Essential - every activity, grade, neighborhood has one</li>
+                        <li><strong>Instagram:</strong> Teens coordinate hangouts (13+ only)</li>
+                        <li><strong>Gaming:</strong> Fortnite, Roblox, Minecraft servers for Israeli kids</li>
+                        <li><strong>Hebrew Maintenance:</strong> Weekend Hebrew groups in all areas</li>
+                        <li><strong>Summer:</strong> Many kids go to Israel camps or visit family</li>
+                        <li><strong>Bar/Bat Mitzvah Circuit:</strong> Major social events, plan 2 years ahead</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
