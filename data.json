@@ -1,8 +1,8 @@
 {
   "metadata": {
     "title": "Enhanced South Florida School & Community Decision Platform",
-    "subtitle": "Complete Analysis Including All Areas with Accurate Tuition Data",
-    "version": "2.1.0",
+    "subtitle": "Complete Analysis Including All Areas with Accurate Tuition Data and School Start Dates",
+    "version": "2.2.0",
     "moveDate": "2025-08-25",
     "lastUpdated": "2025-06-28",
     "lastVerified": "2025-06-28T20:02:00-04:00",
@@ -14,7 +14,8 @@
         "tuition": "2025-06-28",
         "housing": "2025-06-28",
         "schoolRatings": "2025-06-28",
-        "safetyStats": "2025-06-28"
+        "safetyStats": "2025-06-28",
+        "startDates": "2025-06-28"
       }
     },
     "sources": {
@@ -23,7 +24,8 @@
       "schoolRatings": "GreatSchools.org, Florida DOE, US News",
       "demographics": "US Census 2020, local Jewish community surveys",
       "safety": "Local police departments, FBI UCR data",
-      "municipal": "City websites, direct municipal contact"
+      "municipal": "City websites, direct municipal contact",
+      "startDates": "Direct school district verification, academic calendars"
     },
     "updateSchedule": {
       "tuition": "Annual (March-May)",
@@ -31,17 +33,18 @@
       "schoolRatings": "Annual (Summer)",
       "demographics": "Annual (January)",
       "municipal": "Quarterly",
-      "safety": "Semi-annual"
+      "safety": "Semi-annual",
+      "startDates": "Annual (February-March)"
     }
   },
   "dashboard": {
     "metrics": [
       {"label": "Days Until Move", "value": "58", "id": "daysLeft"},
+      {"label": "First School Starts", "value": "Aug 11", "id": "firstStart"},
       {"label": "Schools Analyzed", "value": "31"},
       {"label": "Communities Compared", "value": "7"},
       {"label": "Israeli Families in Region", "value": "25,000+"},
-      {"label": "Annual Tuition Range", "value": "$0-85K"},
-      {"label": "Decision Factors", "value": "13"}
+      {"label": "Annual Tuition Range", "value": "$0-85K"}
     ]
   },
   "weights": {
@@ -58,43 +61,44 @@
       {"id": "cost", "label": "Cost of Living", "default": 50},
       {"id": "international", "label": "International Community", "default": 50},
       {"id": "beach", "label": "Beach Proximity", "default": 50},
-      {"id": "traffic", "label": "Traffic/Commute", "default": 50}
+      {"id": "traffic", "label": "Traffic/Commute", "default": 50},
+      {"id": "startdate", "label": "📅 Start Date Timing", "default": 50}
     ],
     "presets": {
       "academic": {
         "academic": 90, "stem": 80, "arts": 70, "gamedesign": 50, "community": 40,
         "swimming": 50, "safety": 80, "luxury": 60, "tuition": 40, "cost": 60,
-        "international": 50, "beach": 40, "traffic": 60
+        "international": 50, "beach": 40, "traffic": 60, "startdate": 70
       },
       "community": {
         "academic": 60, "stem": 60, "arts": 50, "gamedesign": 50, "community": 100,
         "swimming": 60, "safety": 70, "luxury": 50, "tuition": 50, "cost": 50,
-        "international": 70, "beach": 50, "traffic": 70
+        "international": 70, "beach": 50, "traffic": 70, "startdate": 60
       },
       "swimming": {
         "academic": 70, "stem": 60, "arts": 50, "gamedesign": 40, "community": 50,
         "swimming": 100, "safety": 70, "luxury": 50, "tuition": 50, "cost": 50,
-        "international": 40, "beach": 60, "traffic": 70
+        "international": 40, "beach": 60, "traffic": 70, "startdate": 60
       },
       "gamedesign": {
         "academic": 70, "stem": 80, "arts": 60, "gamedesign": 100, "community": 50,
         "swimming": 40, "safety": 60, "luxury": 40, "tuition": 50, "cost": 50,
-        "international": 60, "beach": 30, "traffic": 70
+        "international": 60, "beach": 30, "traffic": 70, "startdate": 60
       },
       "international": {
         "academic": 80, "stem": 70, "arts": 70, "gamedesign": 60, "community": 80,
         "swimming": 60, "safety": 70, "luxury": 80, "tuition": 60, "cost": 50,
-        "international": 100, "beach": 70, "traffic": 50
+        "international": 100, "beach": 70, "traffic": 50, "startdate": 60
       },
       "budget": {
         "academic": 70, "stem": 60, "arts": 50, "gamedesign": 50, "community": 60,
         "swimming": 50, "safety": 70, "luxury": 40, "tuition": 100, "cost": 90,
-        "international": 50, "beach": 40, "traffic": 60
+        "international": 50, "beach": 40, "traffic": 60, "startdate": 80
       },
       "balanced": {
         "academic": 70, "stem": 70, "arts": 60, "gamedesign": 60, "community": 70,
         "swimming": 60, "safety": 80, "luxury": 60, "tuition": 70, "cost": 70,
-        "international": 60, "beach": 60, "traffic": 70
+        "international": 60, "beach": 60, "traffic": 70, "startdate": 70
       }
     }
   },
@@ -103,6 +107,8 @@
       "name": "Weston Public Schools",
       "coordinates": [26.1003, -80.3997],
       "county": "Broward",
+      "startDate": "2025-08-11",
+      "startDateStatus": "confirmed",
       "tuition": {
         "amount": 0,
         "type": "public",
@@ -117,6 +123,8 @@
             "name": "Everglades Elementary",
             "coordinates": [26.1020, -80.4010],
             "rating": "10/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "10/10",
               "source": "GreatSchools.org",
@@ -137,6 +145,8 @@
             "name": "Gator Run Elementary",
             "coordinates": [26.0980, -80.3920],
             "rating": "10/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "10/10",
               "source": "GreatSchools.org",
@@ -159,6 +169,8 @@
             "name": "Falcon Cove Middle",
             "coordinates": [26.1040, -80.3890],
             "rating": "#112 in Florida",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "#112 in Florida",
               "source": "US News & World Report",
@@ -179,6 +191,8 @@
             "name": "Tequesta Trace Middle",
             "coordinates": [26.0960, -80.3950],
             "rating": "9/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "9/10",
               "source": "GreatSchools.org",
@@ -200,7 +214,7 @@
       "scores": {
         "academic": 100, "stem": 90, "arts": 85, "gamedesign": 60, "community": 70,
         "swimming": 95, "safety": 100, "luxury": 95, "tuition": 100, "cost": 100,
-        "international": 60, "beach": 30, "traffic": 70
+        "international": 60, "beach": 30, "traffic": 70, "startdate": 90
       },
       "demographics": {
         "population": "18,000 Jewish residents",
@@ -241,6 +255,8 @@
       "name": "Cooper City Public Schools",
       "coordinates": [26.0573, -80.2717],
       "county": "Broward",
+      "startDate": "2025-08-11",
+      "startDateStatus": "confirmed",
       "tuition": {
         "amount": 0,
         "type": "public",
@@ -255,6 +271,8 @@
             "name": "Embassy Creek Elementary",
             "coordinates": [26.0520, -80.2680],
             "rating": "9/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "9/10",
               "source": "GreatSchools.org",
@@ -275,6 +293,8 @@
             "name": "Cooper City Elementary",
             "coordinates": [26.0600, -80.2750],
             "rating": "8/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "8/10",
               "source": "GreatSchools.org",
@@ -297,6 +317,8 @@
             "name": "Pioneer Middle School",
             "coordinates": [26.0550, -80.2700],
             "rating": "#140 in Florida",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "#140 in Florida",
               "source": "US News & World Report",
@@ -318,7 +340,7 @@
       "scores": {
         "academic": 85, "stem": 85, "arts": 80, "gamedesign": 65, "community": 70,
         "swimming": 100, "safety": 90, "luxury": 75, "tuition": 100, "cost": 100,
-        "international": 50, "beach": 40, "traffic": 80
+        "international": 50, "beach": 40, "traffic": 80, "startdate": 90
       },
       "demographics": {
         "population": "Growing Israeli presence",
@@ -364,6 +386,8 @@
       "name": "Davie Public Schools",
       "coordinates": [26.0765, -80.2521],
       "county": "Broward",
+      "startDate": "2025-08-11",
+      "startDateStatus": "confirmed",
       "tuition": {"amount": 0, "type": "public", "display": "FREE"},
       "schools": {
         "elementary": [
@@ -371,6 +395,8 @@
             "name": "Fox Trail Elementary",
             "coordinates": [26.0820, -80.2400],
             "rating": "9/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "details": "Math: 67%, Reading: 69%, Art Club praised, Leader in Me program",
             "link": "https://www.google.com/search?q=fox+trail+elementary+davie"
           },
@@ -378,6 +404,8 @@
             "name": "Silver Ridge Elementary",
             "coordinates": [26.0700, -80.2600],
             "rating": "8/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "details": "Chorus program, Student news broadcast, Harry Potter book club",
             "link": "https://www.google.com/search?q=silver+ridge+elementary+davie"
           }
@@ -387,6 +415,8 @@
             "name": "Indian Ridge Middle",
             "coordinates": [26.0780, -80.2450],
             "rating": "7/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "details": "HS credits available, Algebra, Geometry, Biology, Near JCC",
             "link": "https://www.google.com/search?q=indian+ridge+middle+davie"
           },
@@ -394,6 +424,8 @@
             "name": "Nova Middle School",
             "coordinates": [26.0850, -80.2550],
             "rating": "6/10 GreatSchools",
+            "startDate": "2025-08-11",
+            "startDateStatus": "confirmed",
             "details": "Mixed reviews, Basic programs, Diverse student body",
             "link": "https://www.google.com/search?q=nova+middle+school+davie"
           }
@@ -402,7 +434,7 @@
       "scores": {
         "academic": 75, "stem": 70, "arts": 70, "gamedesign": 85, "community": 100,
         "swimming": 80, "safety": 75, "luxury": 70, "tuition": 100, "cost": 100,
-        "international": 70, "beach": 45, "traffic": 85
+        "international": 70, "beach": 45, "traffic": 85, "startdate": 90
       },
       "demographics": {
         "population": "Highest Jewish concentration",
@@ -426,6 +458,8 @@
       "name": "Aventura",
       "coordinates": [25.9561, -80.1394],
       "county": "Miami-Dade",
+      "startDate": "2025-08-14",
+      "startDateStatus": "confirmed",
       "tuition": {"amount": 0, "type": "charter", "display": "FREE"},
       "schools": {
         "elementary": [
@@ -433,6 +467,8 @@
             "name": "Aventura City of Excellence (K-8)",
             "coordinates": [25.9550, -80.1400],
             "rating": "A-rated charter school",
+            "startDate": "2025-08-14",
+            "startDateStatus": "confirmed",
             "details": "Both kids same school, K-8 program, International focus, FREE tuition",
             "link": "https://www.aventuracharter.org/"
           }
@@ -442,6 +478,8 @@
             "name": "ACES Middle School Division",
             "coordinates": [25.9550, -80.1400],
             "rating": "Same campus as elementary",
+            "startDate": "2025-08-14",
+            "startDateStatus": "confirmed",
             "details": "Innovative curriculum, Flexible programming, Strong academics, FREE tuition",
             "link": "https://www.aventuracharter.org/"
           }
@@ -450,7 +488,7 @@
       "scores": {
         "academic": 90, "stem": 85, "arts": 80, "gamedesign": 70, "community": 85,
         "swimming": 75, "safety": 85, "luxury": 100, "tuition": 100, "cost": 70,
-        "international": 100, "beach": 70, "traffic": 60
+        "international": 100, "beach": 70, "traffic": 60, "startdate": 85
       },
       "demographics": {
         "population": "40% international families",
@@ -474,6 +512,8 @@
       "name": "North Miami Beach",
       "coordinates": [25.9331, -80.1625],
       "county": "Miami-Dade",
+      "startDate": "2025-08-14",
+      "startDateStatus": "confirmed",
       "tuition": {"amount": 0, "type": "mixed", "display": "FREE or $72,800"},
       "schools": {
         "elementary": [
@@ -481,6 +521,8 @@
             "name": "Scheck Hillel Community School",
             "coordinates": [25.9300, -80.1600],
             "rating": "#3 Jewish School Miami",
+            "startDate": "2025-08-18",
+            "startDateStatus": "confirmed",
             "details": "K-12 option, 1,300+ students, 7:1 ratio, $36,400/year per child",
             "link": "https://www.ehillel.org/"
           },
@@ -488,6 +530,8 @@
             "name": "Ojus Elementary",
             "coordinates": [25.9350, -80.1650],
             "rating": "7/10 GreatSchools",
+            "startDate": "2025-08-14",
+            "startDateStatus": "confirmed",
             "details": "Public option, Diverse student body, Basic programs, FREE tuition",
             "link": "https://www.google.com/search?q=ojus+elementary+school"
           }
@@ -497,6 +541,8 @@
             "name": "Hillel Middle School",
             "coordinates": [25.9300, -80.1600],
             "rating": "Same campus K-12",
+            "startDate": "2025-08-18",
+            "startDateStatus": "confirmed",
             "details": "Jewish identity focus, Strong academics, Large resources, $36,400/year per child",
             "link": "https://www.ehillel.org/"
           },
@@ -504,6 +550,8 @@
             "name": "Highland Oaks Middle",
             "coordinates": [25.9400, -80.1700],
             "rating": "6/10 GreatSchools",
+            "startDate": "2025-08-14",
+            "startDateStatus": "confirmed",
             "details": "Public option, Standard programs, Mixed reviews, FREE tuition",
             "link": "https://www.google.com/search?q=highland+oaks+middle+school"
           }
@@ -512,7 +560,7 @@
       "scores": {
         "academic": 80, "stem": 75, "arts": 75, "gamedesign": 60, "community": 80,
         "swimming": 85, "safety": 70, "luxury": 75, "tuition": 60, "cost": 85,
-        "international": 75, "beach": 90, "traffic": 65
+        "international": 75, "beach": 90, "traffic": 65, "startdate": 75
       },
       "demographics": {
         "population": "Mixed Orthodox/Secular",
@@ -536,6 +584,8 @@
       "name": "Davie + Posnack School",
       "coordinates": [26.0641, -80.2549],
       "county": "Broward",
+      "startDate": "2025-08-20",
+      "startDateStatus": "confirmed",
       "tuition": {
         "amount": 48500,
         "type": "private",
@@ -554,6 +604,8 @@
             "name": "David Posnack Jewish Day School K-5",
             "coordinates": [26.0641, -80.2549],
             "rating": "#1 Jewish School FL",
+            "startDate": "2025-08-20",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "#1 Jewish School FL",
               "source": "Private School Review, Jewish Education Rankings",
@@ -573,6 +625,8 @@
             "name": "David Posnack Jewish Day School 6-8",
             "coordinates": [26.0641, -80.2549],
             "rating": "Coding 101, Robotics",
+            "startDate": "2025-08-20",
+            "startDateStatus": "confirmed",
             "ratingData": {
               "value": "Excellence in STEM",
               "source": "School program verification",
@@ -591,7 +645,7 @@
       "scores": {
         "academic": 95, "stem": 95, "arts": 85, "gamedesign": 90, "community": 100,
         "swimming": 85, "safety": 75, "luxury": 70, "tuition": 50, "cost": 30,
-        "international": 80, "beach": 45, "traffic": 85
+        "international": 80, "beach": 45, "traffic": 85, "startdate": 70
       },
       "demographics": {
         "population": "Integrated Israeli community",
@@ -615,6 +669,8 @@
       "name": "American Heritage (Plantation)",
       "coordinates": [26.1259, -80.2338],
       "county": "Broward",
+      "startDate": "2025-08-18",
+      "startDateStatus": "projected",
       "tuition": {
         "amount": 87800,
         "type": "private",
@@ -638,6 +694,8 @@
             "name": "American Heritage Lower School",
             "coordinates": [26.1259, -80.2338],
             "rating": "#1 Private K-12 FL",
+            "startDate": "2025-08-18",
+            "startDateStatus": "projected",
             "ratingData": {
               "value": "#1 Private K-12 FL",
               "source": "US News & World Report, Niche.com",
@@ -657,6 +715,8 @@
             "name": "American Heritage Middle School",
             "coordinates": [26.1259, -80.2338],
             "rating": "Engineering intro",
+            "startDate": "2025-08-18",
+            "startDateStatus": "projected",
             "ratingData": {
               "value": "Top 1% National Merit Scholars",
               "source": "National Merit Scholarship Corporation",
@@ -675,7 +735,7 @@
       "scores": {
         "academic": 100, "stem": 100, "arts": 100, "gamedesign": 85, "community": 50,
         "swimming": 60, "safety": 80, "luxury": 90, "tuition": 20, "cost": 20,
-        "international": 70, "beach": 50, "traffic": 75
+        "international": 70, "beach": 50, "traffic": 75, "startdate": 75
       },
       "demographics": {
         "population": "Diverse, not Israeli-focused",
@@ -853,6 +913,11 @@
     }
   },
   "qualitativeInsights": [
+    {
+      "area": "Start Date Planning",
+      "title": "School Start Dates: Critical Move Timing Factor",
+      "description": "School start dates are often overlooked but can make or break your relocation timeline. Broward County schools (Weston, Cooper City, Davie) start August 11, 2025 - the earliest in the region. Miami-Dade schools (Aventura, NMB public) start August 14. Private schools vary: Scheck Hillel and American Heritage start August 18, while David Posnack starts August 20. This means you need to complete your move, secure housing, and handle school enrollment by early August at the latest. Many families underestimate this timeline and face last-minute stress. Pro tip: Different county systems mean different calendars year-round - if you have Israeli friends in both Broward and Miami-Dade, your kids may have different vacation schedules, affecting social connections and family coordination."
+    },
     {
       "area": "Aventura",
       "title": "Manhattan of the South",

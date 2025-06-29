@@ -129,6 +129,9 @@ class SchoolDecisionApp {
             // Update days left counter
             Utils.updateDaysLeft(appData.metadata.moveDate);
             
+            // Update days until school starts
+            Utils.updateDaysUntilSchoolStart();
+            
             // Generate new rankings
             appRankings = RankingEngine.generateRankings(appData.locations, appWeights);
             
@@ -478,6 +481,7 @@ const UIManager = {
         rankCard.onclick = () => this.selectLocation(location.key);
 
         const tuitionInfo = this.getTuitionInfo(location);
+        const startDateInfo = this.getStartDateInfo(location);
         const schoolAssignment = this.getSchoolAssignment(location);
         const programHighlights = this.getProgramHighlights(location);
 
@@ -488,6 +492,7 @@ const UIManager = {
                 <div class="ranking-subtitle">${location.demographics?.population || 'Community'} • ${location.safety?.crimeRate || 'Safe area'}</div>
                 
                 ${tuitionInfo}
+                ${startDateInfo}
                 
                 <div class="score-bar">
                     <div class="score-fill" style="width: ${location.totalScore}%">${location.totalScore}%</div>
@@ -548,6 +553,47 @@ const UIManager = {
         }
 
         return `<div class="tuition-highlight"><strong>💵 Tuition:</strong> <span class="${badgeClass}">${displayText}</span></div>`;
+    },
+
+    /**
+     * Get start date information HTML
+     * @param {Object} location - Location data
+     * @returns {string} HTML string for start date info
+     */
+    getStartDateInfo(location) {
+        if (!location.startDate) return '';
+
+        const startDate = new Date(location.startDate);
+        const formattedDate = startDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        let statusBadge = '';
+        if (location.startDateStatus === 'projected') {
+            statusBadge = '<span class="badge badge-warning">Projected</span>';
+        } else if (location.startDateStatus === 'tentative') {
+            statusBadge = '<span class="badge badge-warning">Tentative</span>';
+        } else {
+            statusBadge = '<span class="badge badge-success">Confirmed</span>';
+        }
+
+        // Calculate days until start
+        const today = new Date();
+        const daysUntilStart = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
+        let urgencyText = '';
+        
+        if (daysUntilStart > 0 && daysUntilStart <= 60) {
+            urgencyText = `<span class="start-date-urgency"> • ${daysUntilStart} days to start!</span>`;
+        }
+
+        return `
+            <div class="start-date-highlight">
+                <strong>📅 School Starts:</strong> ${formattedDate} ${statusBadge}${urgencyText}
+            </div>
+        `;
     },
 
     /**
@@ -1089,6 +1135,31 @@ const Utils = {
             }
         } catch (error) {
             ErrorHandler.handle(error, 'Days calculation');
+        }
+    },
+
+    /**
+     * Calculate days until first school starts
+     */
+    updateDaysUntilSchoolStart() {
+        try {
+            // First school start date is August 11, 2025 (Broward County)
+            const firstStartDate = new Date('2025-08-11');
+            const today = new Date();
+            const daysLeft = Math.ceil((firstStartDate - today) / (1000 * 60 * 60 * 24));
+            
+            const element = document.getElementById('firstStart');
+            if (element) {
+                if (daysLeft > 0) {
+                    element.textContent = `${daysLeft} days`;
+                    element.parentElement.style.background = 'linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)';
+                } else {
+                    element.textContent = 'Started';
+                    element.parentElement.style.background = 'linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%)';
+                }
+            }
+        } catch (error) {
+            ErrorHandler.handle(error, 'School start calculation');
         }
     },
 
